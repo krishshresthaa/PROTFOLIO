@@ -1,0 +1,251 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --concrete: #9a968d;
+    --concrete-a: #a19c92;
+    --concrete-b: #8b8579;
+    --craft: #e6d6b3;
+    --craft-b: #d8c299;
+    --paper: #faf7ee;
+    --grid: #c3d3e0;
+    --ink: #2b2620;
+    --ink-soft: #4a423a;
+    --red: #c22a1f;
+    --red-deep: #8f1d15;
+    --yellow: #f2d94e;
+    --yellow-b: #e3c53a;
+    --blue-note: #8fcbe0;
+    --blue-note-b: #6fb3cc;
+    --pin-blue: #3f7cac;
+    --pin-yellow: #e8b923;
+    --pin-red: #c22a1f;
+    --tape: #cfe3ee;
+    --card-bg: #ffffff;
+    --nav-bg: rgba(250, 247, 238, 0.96);
+    --input-bg: #ffffff;
+  }
+
+  /* Theme: Dark Studio */
+  body.dark-theme {
+    --concrete: #141312 !important;
+    --concrete-a: #201e1a !important;
+    --concrete-b: #121110 !important;
+    --craft: #2b2721 !important;
+    --craft-b: #3b362e !important;
+    --paper: #161513 !important;
+    --grid: #332e27 !important;
+    --ink: #ffffff !important; /* Pure white text */
+    --ink-soft: #e3ded5 !important; /* Warm light text */
+    --red: #ff5247 !important;
+    --red-deep: #cc3128 !important;
+    --yellow: #ffd54f !important;
+    --yellow-b: #e6c024 !important;
+    --blue-note: #36728a !important;
+    --blue-note-b: #245264 !important;
+    --pin-blue: #5ba3d9 !important;
+    --pin-yellow: #f2ca3f !important;
+    --pin-red: #ff5247 !important;
+    --tape: rgba(180, 205, 225, 0.35) !important;
+    --card-bg: #22201c !important;
+    --nav-bg: #181715 !important;
+    --input-bg: #2c2924 !important;
+    color: #ffffff !important;
+    background-color: #161513 !important;
+  }
+
+  /* Theme: Blueprint Graph */
+  body.blueprint-theme {
+    --concrete: #091833 !important;
+    --concrete-a: #102a57 !important;
+    --concrete-b: #061024 !important;
+    --craft: #133266 !important;
+    --craft-b: #1b448a !important;
+    --paper: #0b2247 !important;
+    --grid: #1e4d9e !important;
+    --ink: #ffffff !important; /* Pure white text */
+    --ink-soft: #c2e0ff !important; /* Bright sky blue text */
+    --red: #00e5ff !important; /* Electric cyan accent */
+    --red-deep: #0099b8 !important;
+    --yellow: #ffd54f !important;
+    --yellow-b: #32d4ad !important;
+    --blue-note: #1a4d8c !important;
+    --blue-note-b: #123969 !important;
+    --pin-blue: #00e5ff !important;
+    --pin-yellow: #ffd54f !important;
+    --pin-red: #ff4081 !important;
+    --tape: rgba(0, 229, 255, 0.3) !important;
+    --card-bg: #102e5c !important;
+    --nav-bg: #0b2247 !important;
+    --input-bg: #15386e !important;
+    color: #ffffff !important;
+    background-color: #0b2247 !important;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html, body {
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden !important;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    color: var(--ink);
+    background: var(--paper);
+    -webkit-font-smoothing: antialiased;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  ::selection {
+    background: var(--red);
+    color: #fff;
+  }
+}
+
+/* Custom Typography Helpers */
+.font-marker { font-family: 'Permanent Marker', cursive; }
+.font-caveat { font-family: 'Caveat', cursive; }
+.font-kalam { font-family: 'Kalam', cursive; }
+.font-mono-code { font-family: 'Fira Code', monospace; }
+
+/* Tactile Elements */
+.pin {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.4), inset 0 -2px 3px rgba(0,0,0,0.3), inset 0 2px 2px rgba(255,255,255,0.6);
+  z-index: 20;
+  cursor: grab;
+}
+.pin::after {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.4);
+}
+.pin.blue { background: radial-gradient(circle at 35% 30%, #6fb8dd, var(--pin-blue)); }
+.pin.red { background: radial-gradient(circle at 35% 30%, #e3564a, var(--pin-red)); }
+.pin.yellow { background: radial-gradient(circle at 35% 30%, #f7dc7a, var(--pin-yellow)); }
+
+.tape {
+  position: absolute;
+  background: linear-gradient(180deg, rgba(207,227,238,0.85), rgba(207,227,238,0.65));
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  border: 1px solid rgba(255,255,255,0.4);
+  backdrop-filter: blur(2px);
+  z-index: 10;
+}
+
+.stamp-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Kalam', cursive;
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: .02em;
+  padding: 10px 20px;
+  border: 2.5px solid var(--ink);
+  border-radius: 3px;
+  background: var(--paper);
+  color: var(--ink);
+  transform: rotate(-1deg);
+  transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
+  user-select: none;
+  max-width: 100%;
+}
+.stamp-btn:hover {
+  background: var(--ink);
+  color: var(--paper);
+  transform: rotate(0deg) scale(1.03);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.25);
+}
+
+/* Background Grids & Textures */
+.bg-desk-wood {
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(255,255,255,0.08), transparent 55%),
+    repeating-linear-gradient(115deg, rgba(0,0,0,0.035) 0px, rgba(0,0,0,0.035) 1px, transparent 1px, transparent 3px),
+    repeating-linear-gradient(25deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 4px),
+    linear-gradient(160deg, var(--concrete-a), var(--concrete-b) 60%, var(--concrete));
+}
+
+.bg-graph-paper {
+  background:
+    repeating-linear-gradient(0deg, transparent 0 27px, var(--grid) 27px 28px),
+    repeating-linear-gradient(90deg, transparent 0 27px, var(--grid) 27px 28px),
+    var(--paper);
+}
+
+.bg-craft-paper {
+  background:
+    linear-gradient(135deg, rgba(0,0,0,0.04), transparent 40%),
+    var(--craft);
+}
+
+/* Sticky Note Text High Contrast */
+.note.yellow {
+  background: linear-gradient(160deg, #f2d94e, #e3c53a);
+  color: #2b2620 !important;
+}
+.note.yellow .lbl {
+  color: #594513 !important;
+  opacity: 0.9;
+}
+.note.yellow span {
+  color: #3b2d08 !important;
+}
+
+.note.blue {
+  background: linear-gradient(160deg, #8fcbe0, #6fb3cc);
+  color: #0c2b38 !important;
+}
+.note.blue .lbl {
+  color: #0b3d52 !important;
+  opacity: 0.9;
+}
+.note.blue span {
+  color: #072633 !important;
+}
+
+.note.craft-note {
+  background: var(--craft);
+  color: var(--ink) !important;
+}
+.note.craft-note .lbl {
+  color: var(--ink-soft) !important;
+  opacity: 0.9;
+}
+
+/* Custom Scrollbar & Utilities */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--paper);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--craft-b);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--red);
+}
