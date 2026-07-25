@@ -32,77 +32,58 @@ function SpiderBlueprintWeb() {
   );
 }
 
-/* VECTOR SPIDER-MAN RIGHT PEEKING GRAPHIC */
+/* USER-PROVIDED RED SPIDER-MAN RIGHT PEEKING COMIC PAINTING */
 function SpideyRightPeeker({ scrollProgress }) {
-  // TranslateX mapping: 120% (hidden off screen) -> 10% (peeking out) -> 120% (vanished)
+  // TranslateX mapping: 120% (hidden off screen) -> 12% (peeking out) -> 120% (vanished)
   const x = useTransform(
     scrollProgress,
-    [0.10, 0.22, 0.40, 0.50],
-    ['120%', '10%', '10%', '120%']
+    [0.08, 0.20, 0.38, 0.48],
+    ['120%', '12%', '12%', '120%']
   );
 
   return (
     <motion.div
       style={{ x }}
-      className="fixed right-0 top-[28%] z-40 pointer-events-none w-44 sm:w-64 h-56 sm:h-80 drop-shadow-[0_10px_25px_rgba(194,42,31,0.4)] will-change-transform transform-gpu"
+      className="fixed right-0 top-[22%] z-40 pointer-events-none w-48 sm:w-72 h-72 sm:h-96 drop-shadow-[0_15px_30px_rgba(194,42,31,0.5)] will-change-transform transform-gpu"
     >
-      {/* Hanging Web Line */}
-      <div className="absolute top-0 right-14 w-0.5 h-full bg-white/70 shadow-[0_0_8px_#fff]" />
+      {/* Hanging Web Thread */}
+      <div className="absolute top-0 right-12 w-1 h-32 bg-white/80 shadow-[0_0_10px_#fff]" />
 
-      {/* Spider-Man Head & Shoulder Peeking Out */}
-      <svg className="w-full h-full text-[var(--red)]" viewBox="0 0 200 240" fill="none">
-        {/* Head Mask Base */}
-        <path d="M 60 20 C 130 10, 190 50, 190 130 C 190 190, 120 230, 80 230 C 40 230, 20 180, 20 130 C 20 70, 30 30, 60 20 Z" fill="var(--red)" stroke="#1a1512" strokeWidth="6" />
-        
-        {/* Suit Web Lines Grid */}
-        <path d="M 80 20 L 80 230 M 20 130 L 190 130 M 40 60 L 170 190 M 170 60 L 40 190" stroke="#1a1512" strokeWidth="2.5" strokeOpacity="0.75" />
-        <path d="M 60 70 Q 110 80 160 70 M 50 110 Q 110 120 175 110 M 50 160 Q 110 170 170 160" stroke="#1a1512" strokeWidth="2" strokeOpacity="0.75" />
-
-        {/* Large White Reflective Eye Lens (Left) */}
-        <path d="M 45 90 C 70 85, 95 105, 95 130 C 95 145, 65 155, 45 130 Z" fill="#ffffff" stroke="#1a1512" strokeWidth="7" />
-        {/* Large White Reflective Eye Lens (Right) */}
-        <path d="M 115 90 C 140 85, 165 105, 165 130 C 165 145, 135 155, 115 130 Z" fill="#ffffff" stroke="#1a1512" strokeWidth="7" />
-
-        {/* Spider Emblem Badge Tag */}
-        <g transform="translate(90, 185) scale(0.6)">
-          <path d="M50 20 C45 35 25 35 15 25 C25 40 40 45 45 50 C40 60 20 70 10 85 C25 75 40 65 48 55 L50 65 L52 55 C60 65 75 75 90 85 C80 70 60 60 55 50 C60 45 75 40 85 25 C75 35 55 35 50 20 Z" fill="#1a1512" />
-        </g>
-      </svg>
+      {/* User's Classic Red Spider-Man Painting */}
+      <img
+        src="/spidey-red.png"
+        alt="Spider-Man Peeking Right"
+        className="w-full h-full object-contain object-right border-4 border-[#1a1512] rounded-l-2xl shadow-2xl bg-gradient-to-r from-transparent to-[#1a1512]/30"
+      />
     </motion.div>
   );
 }
 
-/* VECTOR SPIDER-MAN LEFT PEEKING GRAPHIC (UPSIDE DOWN) */
+/* USER-PROVIDED SYMBIOTE BLACK SUIT SPIDER-MAN LEFT PEEKING COMIC PAINTING */
 function SpideyLeftPeeker({ scrollProgress }) {
-  // TranslateX mapping: -120% (hidden off screen) -> -10% (peeking out) -> -120% (vanished)
+  // TranslateX mapping: -120% (hidden off screen) -> -12% (peeking out) -> -120% (vanished)
   const x = useTransform(
     scrollProgress,
-    [0.52, 0.64, 0.80, 0.92],
-    ['-120%', '-10%', '-10%', '-120%']
+    [0.50, 0.62, 0.80, 0.92],
+    ['-120%', '-12%', '-12%', '-120%']
   );
 
   return (
     <motion.div
       style={{ x }}
-      className="fixed left-0 top-[35%] z-40 pointer-events-none w-44 sm:w-64 h-56 sm:h-80 drop-shadow-[0_10px_25px_rgba(194,42,31,0.4)] rotate-180 scale-x-[-1] will-change-transform transform-gpu"
+      className="fixed left-0 top-[30%] z-40 pointer-events-none w-48 sm:w-72 h-72 sm:h-96 drop-shadow-[0_15px_30px_rgba(0,0,0,0.7)] will-change-transform transform-gpu"
     >
-      {/* Hanging Web Line */}
-      <div className="absolute top-0 left-14 w-0.5 h-full bg-white/70 shadow-[0_0_8px_#fff]" />
+      {/* Spider-Sense Alarm Lines */}
+      <div className="absolute -top-6 left-12 font-marker text-2xl text-[var(--red)] font-bold tracking-widest animate-bounce">
+        /// SPIDEY-SENSE
+      </div>
 
-      {/* Spider-Man Head & Shoulder Peeking Out */}
-      <svg className="w-full h-full text-[var(--red)]" viewBox="0 0 200 240" fill="none">
-        {/* Head Mask Base */}
-        <path d="M 60 20 C 130 10, 190 50, 190 130 C 190 190, 120 230, 80 230 C 40 230, 20 180, 20 130 C 20 70, 30 30, 60 20 Z" fill="var(--red)" stroke="#1a1512" strokeWidth="6" />
-        
-        {/* Suit Web Lines Grid */}
-        <path d="M 80 20 L 80 230 M 20 130 L 190 130 M 40 60 L 170 190 M 170 60 L 40 190" stroke="#1a1512" strokeWidth="2.5" strokeOpacity="0.75" />
-        <path d="M 60 70 Q 110 80 160 70 M 50 110 Q 110 120 175 110 M 50 160 Q 110 170 170 160" stroke="#1a1512" strokeWidth="2" strokeOpacity="0.75" />
-
-        {/* Large White Reflective Eye Lens (Left) */}
-        <path d="M 45 90 C 70 85, 95 105, 95 130 C 95 145, 65 155, 45 130 Z" fill="#ffffff" stroke="#1a1512" strokeWidth="7" />
-        {/* Large White Reflective Eye Lens (Right) */}
-        <path d="M 115 90 C 140 85, 165 105, 165 130 C 165 145, 135 155, 115 130 Z" fill="#ffffff" stroke="#1a1512" strokeWidth="7" />
-      </svg>
+      {/* User's Black Symbiote Spider-Man Painting */}
+      <img
+        src="/spidey-black.png"
+        alt="Symbiote Spider-Man Peeking Left"
+        className="w-full h-full object-contain object-left border-4 border-[#1a1512] rounded-r-2xl shadow-2xl bg-gradient-to-l from-transparent to-[#1a1512]/40"
+      />
     </motion.div>
   );
 }
@@ -250,7 +231,7 @@ export default function WorkGallery({ theme }) {
   return (
     <section ref={sectionRef} className="relative py-16 sm:py-24 px-3 sm:px-4 bg-graph-paper border-t-8 border-b-8 border-[var(--craft-b)] overflow-hidden max-w-full" id="work">
       
-      {/* SCROLL-DRIVEN SPIDER-MAN EDGE PEEKERS */}
+      {/* SCROLL-DRIVEN USER SPIDER-MAN COMIC PAINTINGS */}
       <SpideyRightPeeker scrollProgress={scrollYProgress} />
       <SpideyLeftPeeker scrollProgress={scrollYProgress} />
 
