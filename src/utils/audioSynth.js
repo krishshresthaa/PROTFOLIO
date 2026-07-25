@@ -10,12 +10,11 @@ let unlocked = false;
 let melodyInterval = null;
 let melodyStep = 0;
 
-// Soft Pentatonic Ambient Melody Notes (Frequencies in Hz)
-const AMBIENT_NOTES = [130.81, 164.81, 196.00, 246.94, 293.66, 329.63, 246.94, 196.00];
+// High-Audibility Pentatonic Ambient Melody Notes (Hz)
+const AMBIENT_NOTES = [261.63, 329.63, 392.00, 493.88, 587.33, 659.25, 493.88, 392.00];
 
 // Global User Gesture Unlocker for Browser Autoplay Policy
 const unlockAudio = () => {
-  if (unlocked) return;
   try {
     if (!audioCtx && typeof window !== 'undefined') {
       const AudioContextClass = window.AudioContext || window.webkitAudioContext;
@@ -26,9 +25,8 @@ const unlockAudio = () => {
         masterGain.gain.setValueAtTime(1.0, audioCtx.currentTime);
         masterGain.connect(audioCtx.destination);
 
-        // Music Gain Node for Soft Ambient Background Melody
         musicGain = audioCtx.createGain();
-        musicGain.gain.setValueAtTime(soundEnabled ? 0.04 : 0.0, audioCtx.currentTime);
+        musicGain.gain.setValueAtTime(soundEnabled ? 0.22 : 0.0, audioCtx.currentTime);
         musicGain.connect(masterGain);
       }
     }
@@ -46,9 +44,9 @@ const unlockAudio = () => {
 
 // Add global listeners to unlock audio on first user interaction anywhere
 if (typeof window !== 'undefined') {
-  const unlockEvents = ['click', 'pointerdown', 'touchstart', 'keydown'];
+  const unlockEvents = ['click', 'pointerdown', 'touchstart', 'keydown', 'scroll'];
   unlockEvents.forEach(evt => {
-    window.addEventListener(evt, unlockAudio, { once: true, passive: true });
+    window.addEventListener(evt, unlockAudio, { passive: true });
   });
 }
 
@@ -70,28 +68,28 @@ const startAmbientMelody = () => {
       osc.type = 'sine';
       osc.frequency.setValueAtTime(noteFreq, audioCtx.currentTime);
 
-      // Lowpass Filter for Warm Lo-Fi Studio Sound
+      // Lowpass Filter for Warm Lo-Fi Sound
       filter.type = 'lowpass';
-      filter.frequency.setValueAtTime(550, audioCtx.currentTime);
+      filter.frequency.setValueAtTime(1200, audioCtx.currentTime);
 
-      // Soft Envelope (Slow Attack & Gentle Decay)
+      // Audible Envelope (Smooth Attack & Warm Decay)
       gain.gain.setValueAtTime(0.001, audioCtx.currentTime);
-      gain.gain.linearRampToValueAtTime(0.04, audioCtx.currentTime + 0.4); // Very soft low volume
-      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 2.2);
+      gain.gain.linearRampToValueAtTime(0.22, audioCtx.currentTime + 0.3); // Boosted gain for clear audibility
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.8);
 
       osc.connect(filter);
       filter.connect(gain);
-      gain.connect(musicGain || masterGain);
+      gain.connect(musicGain || masterGain || audioCtx.destination);
 
       osc.start();
-      osc.stop(audioCtx.currentTime + 2.2);
+      osc.stop(audioCtx.currentTime + 1.8);
     } catch (e) {
       // Ignore
     }
   };
 
   playNextMelodyNote();
-  melodyInterval = setInterval(playNextMelodyNote, 1400); // Gentle 1.4s arpeggio tempo
+  melodyInterval = setInterval(playNextMelodyNote, 1200); // 1.2s tempo
 };
 
 const getAudioContext = () => {
@@ -102,7 +100,7 @@ const getAudioContext = () => {
 export const setSoundEnabled = (enabled) => {
   soundEnabled = enabled;
   if (musicGain && audioCtx) {
-    musicGain.gain.setValueAtTime(enabled ? 0.04 : 0.0, audioCtx.currentTime);
+    musicGain.gain.setValueAtTime(enabled ? 0.22 : 0.0, audioCtx.currentTime);
   }
   if (enabled) {
     unlockAudio();
