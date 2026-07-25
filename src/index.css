@@ -9,6 +9,7 @@
     --craft-b: #d8c299;
     --paper: #faf7ee;
     --grid: #c3d3e0;
+    --grid-major: #a7bed3;
     --ink: #2b2620;
     --ink-soft: #4a423a;
     --red: #c22a1f;
@@ -34,7 +35,8 @@
     --craft: #2b2721 !important;
     --craft-b: #3b362e !important;
     --paper: #161513 !important;
-    --grid: #332e27 !important;
+    --grid: #28241f !important;
+    --grid-major: #3a342c !important;
     --ink: #ffffff !important;
     --ink-soft: #e3ded5 !important;
     --red: #ff5247 !important;
@@ -62,7 +64,8 @@
     --craft: #133266 !important;
     --craft-b: #1b448a !important;
     --paper: #0b2247 !important;
-    --grid: #1e4d9e !important;
+    --grid: #173d7e !important;
+    --grid-major: #2154ab !important;
     --ink: #ffffff !important;
     --ink-soft: #c2e0ff !important;
     --red: #00e5ff !important;
@@ -184,27 +187,51 @@
   box-shadow: 0 8px 18px rgba(0,0,0,0.25);
 }
 
-/* HIGH-END CREATIVE STUDIO DESK WORKSTATION BACKGROUND */
+/* HIGH-END MULTI-LAYERED ARTIST STUDIO WORKSTATION BACKGROUNDS */
 .bg-desk-wood {
   background:
-    radial-gradient(circle at 50% 15%, rgba(255,240,200,0.18) 0%, transparent 60%),
+    radial-gradient(ellipse at 50% 10%, rgba(255,245,210,0.22) 0%, transparent 65%),
     repeating-linear-gradient(0deg, transparent 0 39px, rgba(255,255,255,0.06) 39px 40px),
     repeating-linear-gradient(90deg, transparent 0 39px, rgba(255,255,255,0.06) 39px 40px),
+    repeating-linear-gradient(135deg, rgba(0,0,0,0.05) 0px, rgba(0,0,0,0.05) 2px, transparent 2px, transparent 7px),
     radial-gradient(ellipse at 50% 50%, #2e2822 0%, #1c1815 70%, #120f0d 100%);
   background-color: #1c1815;
 }
 
+/* DUAL-TONE DRAFTING GRAPH PAPER BACKGROUND WITH DIAGOMAL LINEN TEXTURE */
 .bg-graph-paper {
   background:
-    repeating-linear-gradient(0deg, transparent 0 27px, var(--grid) 27px 28px),
-    repeating-linear-gradient(90deg, transparent 0 27px, var(--grid) 27px 28px),
+    /* Major 100px Grid Lines */
+    repeating-linear-gradient(0deg, transparent 0 99px, var(--grid-major) 99px 100px),
+    repeating-linear-gradient(90deg, transparent 0 99px, var(--grid-major) 99px 100px),
+    /* Minor 25px Grid Lines */
+    repeating-linear-gradient(0deg, transparent 0 24px, var(--grid) 24px 25px),
+    repeating-linear-gradient(90deg, transparent 0 24px, var(--grid) 24px 25px),
+    /* Soft Vignette Depth Shadow */
+    radial-gradient(ellipse at 50% 50%, transparent 40%, rgba(0,0,0,0.04) 100%),
     var(--paper);
 }
 
 .bg-craft-paper {
   background:
-    linear-gradient(135deg, rgba(0,0,0,0.04), transparent 40%),
+    linear-gradient(135deg, rgba(0,0,0,0.06), transparent 50%),
+    repeating-linear-gradient(45deg, rgba(0,0,0,0.02) 0px, rgba(0,0,0,0.02) 1px, transparent 1px, transparent 4px),
     var(--craft);
+}
+
+/* Metric Ruler Scale Accent Background Pattern */
+.bg-ruler-ticks {
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--ink-soft) 0px,
+    var(--ink-soft) 1px,
+    transparent 1px,
+    transparent 10px
+  );
+  background-size: 100% 8px;
+  background-repeat: no-repeat;
+  background-position: top;
+  opacity: 0.3;
 }
 
 /* Sticky Note Text High Contrast */

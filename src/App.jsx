@@ -29,8 +29,28 @@ export default function App() {
   }, [theme]);
 
   return (
-    <div className={`min-h-screen bg-[var(--paper)] text-[var(--ink)] transition-colors duration-300 ${theme === 'dark' ? 'dark-theme' : theme === 'blueprint' ? 'blueprint-theme' : ''}`}>
+    <div className={`min-h-screen bg-[var(--paper)] text-[var(--ink)] transition-colors duration-300 relative ${theme === 'dark' ? 'dark-theme' : theme === 'blueprint' ? 'blueprint-theme' : ''}`}>
       
+      {/* Background Graphic Blueprint Crosshairs & Halftone Accents */}
+      <div className="fixed inset-0 pointer-events-none z-0 opacity-15 overflow-hidden">
+        <div className="absolute top-[15%] left-6 font-mono-code text-xs text-[var(--ink-soft)] font-bold select-none">+ 00° 15' N // GRID_STUDIO</div>
+        <div className="absolute top-[35%] right-6 font-mono-code text-xs text-[var(--ink-soft)] font-bold select-none">+ 85° 40' E // DRAFTING_SCALE</div>
+        <div className="absolute top-[65%] left-6 font-mono-code text-xs text-[var(--ink-soft)] font-bold select-none">SCALE 1:1 // KRISH_SHRESTHA</div>
+        <div className="absolute top-[85%] right-6 font-mono-code text-xs text-[var(--ink-soft)] font-bold select-none">TYPOGRAPHY_LAB_2026</div>
+
+        {/* Floating Geometric Blueprint Target Rings */}
+        <svg className="absolute top-1/4 left-10 w-24 h-24 text-[var(--ink-soft)] opacity-20" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" strokeWidth="1" strokeDasharray="4 4" />
+          <line x1="50" y1="0" x2="50" y2="100" stroke="currentColor" strokeWidth="1" />
+          <line x1="0" y1="50" x2="100" y2="50" stroke="currentColor" strokeWidth="1" />
+        </svg>
+
+        <svg className="absolute bottom-1/4 right-10 w-28 h-28 text-[var(--ink-soft)] opacity-20" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" strokeWidth="1" />
+          <polygon points="50,10 90,90 10,90" fill="none" stroke="currentColor" strokeWidth="1" strokeDasharray="3 3" />
+        </svg>
+      </div>
+
       {/* Animated Workspace Preloader */}
       {loading && <Preloader onComplete={() => setLoading(false)} />}
 
@@ -48,8 +68,8 @@ export default function App() {
       />
 
       {/* Main Content Sections */}
-      <main>
-        {/* Interactive Physical Desk Hero (Entrance animations trigger AFTER preloader completes) */}
+      <main className="relative z-10">
+        {/* Interactive Physical Desk Hero */}
         <HeroDesk 
           isLoaded={!loading}
           onOpenSketchpad={() => setSketchpadOpen(true)} 
