@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
-import { RefreshCw, Lightbulb, ArrowDown, FileText, Folder, Sparkles, Zap, SunMedium } from 'lucide-react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { RefreshCw, Lightbulb, ArrowDown, FileText, Folder, Sparkles } from 'lucide-react';
 import { playPaperRustle, playStampClick, playPop } from '../utils/audioSynth';
 import { USER_INFO } from '../data/portfolioData';
 
@@ -8,37 +8,48 @@ export default function HeroDesk({ isLoaded = true, onOpenSketchpad, onOpenResum
   const [lampOn, setLampOn] = useState(true);
   const [resetKey, setResetKey] = useState(0);
 
-  // Mouse Parallax Coordinates (-1 to 1)
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const headerRef = useRef(null);
   const rafRef = useRef(null);
 
-  const handleMouseMove = (e) => {
-    if (rafRef.current) return;
-
-    const { innerWidth, innerHeight } = window;
-    const clientX = e.clientX;
-    const clientY = e.clientY;
-
-    rafRef.current = requestAnimationFrame(() => {
-      const x = (clientX - innerWidth / 2) / (innerWidth / 2);
-      const y = (clientY - innerHeight / 2) / (innerHeight / 2);
-      setMousePos({ x, y });
-      rafRef.current = null;
-    });
-  };
-
+  // Pure GPU CSS Variables Mouse Parallax (ZERO React Re-renders!)
   useEffect(() => {
+    const headerEl = headerRef.current;
+    if (!headerEl) return;
+
+    let targetX = 0;
+    let targetY = 0;
+    let currentX = 0;
+    let currentY = 0;
+    let isActive = true;
+
+    const handleMouseMove = (e) => {
+      const { innerWidth, innerHeight } = window;
+      targetX = (e.clientX - innerWidth / 2) / (innerWidth / 2);
+      targetY = (e.clientY - innerHeight / 2) / (innerHeight / 2);
+    };
+
+    const updateParallax = () => {
+      if (!isActive) return;
+
+      // Silky smooth lerp without React state updates
+      currentX += (targetX - currentX) * 0.08;
+      currentY += (targetY - currentY) * 0.08;
+
+      headerEl.style.setProperty('--mx', currentX.toFixed(4));
+      headerEl.style.setProperty('--my', currentY.toFixed(4));
+
+      rafRef.current = requestAnimationFrame(updateParallax);
+    };
+
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    rafRef.current = requestAnimationFrame(updateParallax);
+
     return () => {
+      isActive = false;
+      window.removeEventListener('mousemove', handleMouseMove);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
   }, []);
-
-  // Smooth Springs for Mouse Parallax
-  const springConfig = { stiffness: 90, damping: 22 };
-  const parallaxX = useSpring(mousePos.x * 18, springConfig);
-  const parallaxY = useSpring(mousePos.y * 18, springConfig);
-  const rotateX = useSpring(mousePos.y * -5, springConfig);
-  const rotateY = useSpring(mousePos.x * 5, springConfig);
 
   // Scroll Parallax Transforms
   const { scrollY } = useScroll();
@@ -64,34 +75,29 @@ export default function HeroDesk({ isLoaded = true, onOpenSketchpad, onOpenResum
 
   return (
     <header 
-      onMouseMove={handleMouseMove}
+      ref={headerRef}
       className={`relative min-h-[92vh] py-12 sm:py-16 px-3 sm:px-4 bg-desk-wood overflow-hidden select-none border-b-8 border-[var(--craft-b)] perspective-1000 max-w-full transition-all duration-700 ${
         lampOn ? 'brightness-100 contrast-100' : 'brightness-50 contrast-125 bg-stone-950'
       }`} 
       id="home"
     >
       
-      {/* REAL STUDIO DESK LAMP SPOTLIGHT CONE */}
-      <motion.div 
+      {/* REAL STUDIO DESK LAMP SPOTLIGHT CONE (GPU CSS PARALLAX) */}
+      <div 
         style={{
-          x: useTransform(parallaxX, (v) => v * -0.6),
-          y: useTransform(parallaxY, (v) => v * -0.6)
+          transform: 'translate3d(calc(var(--mx, 0) * -25px), calc(var(--my, 0) * -25px), 0)'
         }}
         className={`absolute -top-[15%] left-1/2 -translate-x-1/2 w-[700px] sm:w-[1400px] h-[700px] sm:h-[1400px] pointer-events-none transition-all duration-700 z-10 will-change-transform transform-gpu ${
           lampOn ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
         }`}
       >
-        {/* Light Cone Ray Beam */}
         <div className="w-full h-full rounded-full bg-[radial-gradient(ellipse_at_top,rgba(255,245,215,0.42)_0%,rgba(255,225,160,0.18)_35%,rgba(255,200,100,0.05)_60%,transparent_80%)] blur-md" />
-      </motion.div>
+      </div>
 
-      {/* PHYSICAL DESK LAMP FIXTURE & LED BULB */}
+      {/* PHYSICAL DESK LAMP FIXTURE */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 z-30 pointer-events-none flex flex-col items-center">
-        {/* Metal Lamp Arm */}
         <div className="w-3 sm:w-4 h-8 sm:h-12 bg-gradient-to-b from-stone-800 to-stone-600 rounded-b shadow-md border-x border-stone-500" />
-        {/* Lamp Shade Dome */}
         <div className="relative w-28 sm:w-44 h-10 sm:h-14 bg-gradient-to-b from-stone-900 via-stone-800 to-stone-900 rounded-t-full border-t-2 border-amber-400/40 shadow-2xl flex items-end justify-center pb-1">
-          {/* LED Glowing Bulb */}
           <div 
             className={`w-12 sm:w-20 h-3 sm:h-5 rounded-full transition-all duration-500 ${
               lampOn 
@@ -105,38 +111,27 @@ export default function HeroDesk({ isLoaded = true, onOpenSketchpad, onOpenResum
       {/* Floating Design Tokens Particles */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden z-10 opacity-40">
         {floatingTokens.map((token, i) => (
-          <motion.div
+          <div
             key={i}
             className="absolute font-mono-code font-bold text-xs sm:text-sm text-[var(--yellow)]/80 select-none will-change-transform transform-gpu"
             style={{
               left: `${10 + (i * 12)}%`,
-              top: `${20 + (i * 9)}%`
-            }}
-            animate={{
-              y: [0, -35, 0],
-              x: [0, (i % 2 === 0 ? 15 : -15), 0],
-              opacity: lampOn ? [0.3, 0.8, 0.3] : [0.1, 0.4, 0.1]
-            }}
-            transition={{
-              duration: 5 + (i * 0.7),
-              repeat: Infinity,
-              ease: 'easeInOut',
-              delay: i * 0.2
+              top: `${20 + (i * 9)}%`,
+              transform: `translate3d(calc(var(--mx, 0) * ${(i % 2 === 0 ? 12 : -12)}px), calc(var(--my, 0) * ${(i % 2 === 0 ? 12 : -12)}px), 0)`
             }}
           >
             {token}
-          </motion.div>
+          </div>
         ))}
       </div>
 
-      {/* DESK CONTROL BAR WITH WORKING DESK LAMP BUTTON */}
+      {/* DESK CONTROL BAR */}
       <motion.div 
         initial={{ opacity: 0, y: -20 }}
         animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
         transition={{ delay: 0.1 }}
         className="absolute top-4 sm:top-6 right-3 sm:right-6 z-40 flex items-center gap-2 sm:gap-3 bg-[var(--paper)]/95 backdrop-blur-md border-2 border-[var(--ink)] p-1.5 sm:p-2 rounded-lg shadow-xl"
       >
-        {/* DESK LAMP ON/OFF TOGGLE BUTTON */}
         <button
           onClick={toggleLamp}
           className={`flex items-center gap-1.5 px-3 sm:px-4 py-1.5 text-xs sm:text-sm font-bold font-kalam rounded border-2 border-[var(--ink)] transition-all duration-300 shadow-md ${
@@ -163,39 +158,25 @@ export default function HeroDesk({ isLoaded = true, onOpenSketchpad, onOpenResum
         </button>
       </motion.div>
 
-      {/* 3D PARALLAX BACKGROUND SHEETS */}
-      <motion.div 
-        initial={{ opacity: 0, scale: 0.85, rotate: -6 }}
-        animate={isLoaded ? { opacity: 1, scale: 1, rotate: -1 } : { opacity: 0, scale: 0.85, rotate: -6 }}
-        transition={{ duration: 0.7, type: 'spring', damping: 18 }}
+      {/* 3D PARALLAX BACKGROUND SHEETS (GPU CSS DRIVEN) */}
+      <div 
         style={{
-          rotateX,
-          rotateY,
-          x: useTransform(parallaxX, (v) => v * 0.4),
-          y: useTransform(parallaxY, (v) => v * 0.4)
+          transform: 'translate3d(-50%, calc(var(--my, 0) * 10px), 0) rotateX(calc(var(--my, 0) * -3deg)) rotateY(calc(var(--mx, 0) * 3deg))'
         }}
-        className="absolute w-[94%] sm:w-[86%] max-w-[1020px] h-[86%] sm:h-[80%] top-[7%] sm:top-[10%] left-1/2 -translate-x-1/2 bg-craft-paper shadow-2xl rounded-sm pointer-events-none border border-[var(--craft-b)] will-change-transform transform-gpu" 
+        className="absolute w-[94%] sm:w-[86%] max-w-[1020px] h-[86%] sm:h-[80%] top-[7%] sm:top-[10%] left-1/2 bg-craft-paper shadow-2xl rounded-sm pointer-events-none border border-[var(--craft-b)] will-change-transform transform-gpu transition-transform duration-75" 
       />
-      <motion.div 
-        initial={{ opacity: 0, scale: 0.85, rotate: 6 }}
-        animate={isLoaded ? { opacity: 1, scale: 1, rotate: 1 } : { opacity: 0, scale: 0.85, rotate: 6 }}
-        transition={{ duration: 0.7, delay: 0.1, type: 'spring', damping: 18 }}
+      <div 
         style={{
-          rotateX,
-          rotateY,
-          x: useTransform(parallaxX, (v) => v * 0.7),
-          y: useTransform(parallaxY, (v) => v * 0.7)
+          transform: 'translate3d(-50%, calc(var(--my, 0) * 16px), 0) rotateX(calc(var(--my, 0) * -4deg)) rotateY(calc(var(--mx, 0) * 4deg))'
         }}
-        className="absolute w-[88%] sm:w-[76%] max-w-[880px] h-[78%] sm:h-[68%] top-[11%] sm:top-[16%] left-1/2 -translate-x-1/2 bg-graph-paper opacity-95 shadow-xl rounded-sm pointer-events-none border border-[var(--grid)] will-change-transform transform-gpu" 
+        className="absolute w-[88%] sm:w-[76%] max-w-[880px] h-[78%] sm:h-[68%] top-[11%] sm:top-[16%] left-1/2 bg-graph-paper opacity-95 shadow-xl rounded-sm pointer-events-none border border-[var(--grid)] will-change-transform transform-gpu transition-transform duration-75" 
       />
 
-      {/* MAIN DESK CONTENT LAYER WITH SCROLL & MOUSE PARALLAX */}
+      {/* MAIN DESK CONTENT LAYER */}
       <motion.div 
         style={{ 
           scale: heroScale,
-          opacity: heroOpacity,
-          x: parallaxX,
-          y: parallaxY
+          opacity: heroOpacity
         }}
         className="relative z-10 max-w-[1240px] mx-auto min-h-[74vh] flex flex-col items-center justify-center text-center px-2 will-change-transform transform-gpu"
       >
@@ -318,10 +299,9 @@ export default function HeroDesk({ isLoaded = true, onOpenSketchpad, onOpenResum
               whileTap={{ scale: 0.95, cursor: 'grabbing' }}
               onDragStart={playPaperRustle}
               style={{
-                x: useTransform(parallaxX, (v) => v * 0.9),
-                y: useTransform(parallaxY, (v) => v * 0.9)
+                transform: 'translate3d(calc(var(--mx, 0) * 12px), calc(var(--my, 0) * 12px), 0)'
               }}
-              className="note yellow relative md:absolute md:top-[4%] md:left-[3%] sm:md:left-[5%] w-full md:w-56 p-4 sm:p-5 font-kalam font-bold text-base sm:text-xl shadow-xl cursor-grab border border-yellow-400/40 rounded-sm will-change-transform transform-gpu"
+              className="note yellow relative md:absolute md:top-[4%] md:left-[3%] sm:md:left-[5%] w-full md:w-56 p-4 sm:p-5 font-kalam font-bold text-base sm:text-xl shadow-xl cursor-grab border border-yellow-400/40 rounded-sm will-change-transform transform-gpu transition-transform duration-75"
             >
               <span className="pin yellow top-[-8px] left-1/2 -ml-2" />
               <span className="lbl block font-sans font-bold text-[10px] tracking-widest uppercase mb-1">Designer</span>
@@ -340,10 +320,9 @@ export default function HeroDesk({ isLoaded = true, onOpenSketchpad, onOpenResum
               whileTap={{ scale: 0.95, cursor: 'grabbing' }}
               onDragStart={playPaperRustle}
               style={{
-                x: useTransform(parallaxX, (v) => v * -0.9),
-                y: useTransform(parallaxY, (v) => v * -0.9)
+                transform: 'translate3d(calc(var(--mx, 0) * -12px), calc(var(--my, 0) * -12px), 0)'
               }}
-              className="note blue relative md:absolute md:top-[8%] md:right-[3%] sm:md:right-[5%] w-full md:w-56 p-4 sm:p-5 font-kalam font-bold text-sm sm:text-lg shadow-xl cursor-grab border border-sky-400/40 rounded-sm will-change-transform transform-gpu"
+              className="note blue relative md:absolute md:top-[8%] md:right-[3%] sm:md:right-[5%] w-full md:w-56 p-4 sm:p-5 font-kalam font-bold text-sm sm:text-lg shadow-xl cursor-grab border border-sky-400/40 rounded-sm will-change-transform transform-gpu transition-transform duration-75"
             >
               <span className="pin blue top-[-8px] right-4" />
               <span className="lbl block font-sans font-bold text-[10px] tracking-widest uppercase mb-1">Specialization</span>
@@ -362,10 +341,9 @@ export default function HeroDesk({ isLoaded = true, onOpenSketchpad, onOpenResum
               whileTap={{ scale: 0.95, cursor: 'grabbing' }}
               onDragStart={playPaperRustle}
               style={{
-                x: useTransform(parallaxX, (v) => v * 1.1),
-                y: useTransform(parallaxY, (v) => v * 1.1)
+                transform: 'translate3d(calc(var(--mx, 0) * 16px), calc(var(--my, 0) * 16px), 0)'
               }}
-              className="note craft-note relative md:absolute md:bottom-[14%] md:left-[3%] sm:md:left-[6%] w-full md:w-60 p-4 sm:p-5 font-kalam font-bold text-xs sm:text-base shadow-xl cursor-grab border border-[var(--craft-b)] rounded-sm will-change-transform transform-gpu"
+              className="note craft-note relative md:absolute md:bottom-[14%] md:left-[3%] sm:md:left-[6%] w-full md:w-60 p-4 sm:p-5 font-kalam font-bold text-xs sm:text-base shadow-xl cursor-grab border border-[var(--craft-b)] rounded-sm will-change-transform transform-gpu transition-transform duration-75"
             >
               <span className="pin red top-[-8px] left-1/2 -ml-2" />
               <span className="lbl block font-sans font-bold text-[10px] tracking-widest uppercase mb-1">Background</span>
@@ -383,10 +361,9 @@ export default function HeroDesk({ isLoaded = true, onOpenSketchpad, onOpenResum
               whileTap={{ scale: 0.95, cursor: 'grabbing' }}
               onDragStart={playPaperRustle}
               style={{
-                x: useTransform(parallaxX, (v) => v * -1.1),
-                y: useTransform(parallaxY, (v) => v * -1.1)
+                transform: 'translate3d(calc(var(--mx, 0) * -16px), calc(var(--my, 0) * -16px), 0)'
               }}
-              className="note yellow relative md:absolute md:bottom-[12%] md:right-[3%] sm:md:right-[6%] w-full md:w-60 p-4 sm:p-5 font-kalam font-bold text-xs sm:text-base shadow-xl cursor-grab border border-yellow-400/40 rounded-sm will-change-transform transform-gpu"
+              className="note yellow relative md:absolute md:bottom-[12%] md:right-[3%] sm:md:right-[6%] w-full md:w-60 p-4 sm:p-5 font-kalam font-bold text-xs sm:text-base shadow-xl cursor-grab border border-yellow-400/40 rounded-sm will-change-transform transform-gpu transition-transform duration-75"
             >
               <span className="pin red top-[-8px] left-3" />
               <span className="lbl block font-sans font-bold text-[10px] tracking-widest uppercase mb-1">Craft</span>
@@ -405,10 +382,9 @@ export default function HeroDesk({ isLoaded = true, onOpenSketchpad, onOpenResum
             whileHover={{ scale: 1.2, rotate: -8 }}
             onDragStart={playPaperRustle}
             style={{
-              x: useTransform(parallaxX, (v) => v * 1.4),
-              y: useTransform(parallaxY, (v) => v * 1.4)
+              transform: 'translate3d(calc(var(--mx, 0) * 18px), calc(var(--my, 0) * 18px), 0)'
             }}
-            className="absolute bottom-[4%] left-[26%] w-36 sm:w-44 -rotate-12 cursor-grab z-20 hidden md:block will-change-transform transform-gpu"
+            className="absolute bottom-[4%] left-[26%] w-36 sm:w-44 -rotate-12 cursor-grab z-20 hidden md:block will-change-transform transform-gpu transition-transform duration-75"
             title="Draggable Pencil"
           >
             <img 

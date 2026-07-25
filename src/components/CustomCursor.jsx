@@ -6,13 +6,11 @@ export default function CustomCursor() {
   const rafId = useRef(null);
 
   useEffect(() => {
-    // Disable on touch / mobile devices
+    // Disable custom cursor on touch / mobile devices
     if (window.matchMedia('(pointer: coarse)').matches) return;
 
     let mouseX = -100;
     let mouseY = -100;
-    let ringX = -100;
-    let ringY = -100;
     let isHovering = false;
     let isMouseDown = false;
 
@@ -28,19 +26,16 @@ export default function CustomCursor() {
     const handleMouseUp = () => { isMouseDown = false; };
 
     const render = () => {
-      // Smooth lerp for outer magnetic ring
-      ringX += (mouseX - ringX) * 0.22;
-      ringY += (mouseY - ringY) * 0.22;
-
+      // Instant 1-to-1 hardware tracking without lerp delay
       if (dotRef.current) {
-        const dotScale = isMouseDown ? 0.6 : isHovering ? 1.5 : 1;
+        const dotScale = isMouseDown ? 0.6 : isHovering ? 1.4 : 1;
         dotRef.current.style.transform = `translate3d(${mouseX - 7}px, ${mouseY - 7}px, 0) scale(${dotScale})`;
       }
 
       if (ringRef.current) {
-        const ringScale = isMouseDown ? 0.85 : isHovering ? 1.8 : 1;
+        const ringScale = isMouseDown ? 0.85 : isHovering ? 1.6 : 1;
         const ringColor = isHovering ? 'var(--red)' : 'var(--ink)';
-        ringRef.current.style.transform = `translate3d(${ringX - 20}px, ${ringY - 20}px, 0) scale(${ringScale})`;
+        ringRef.current.style.transform = `translate3d(${mouseX - 20}px, ${mouseY - 20}px, 0) scale(${ringScale})`;
         ringRef.current.style.borderColor = ringColor;
       }
 
@@ -63,16 +58,16 @@ export default function CustomCursor() {
 
   return (
     <div className="pointer-events-none fixed inset-0 z-50 overflow-hidden hidden md:block">
-      {/* Inner Red Pen Dot (Pure Hardware-Accelerated DOM Ref) */}
+      {/* Inner Red Pen Dot */}
       <div
         ref={dotRef}
-        className="fixed top-0 left-0 w-3.5 h-3.5 bg-[var(--red)] rounded-full z-50 pointer-events-none shadow-sm will-change-transform transform-gpu transition-transform duration-75"
+        className="fixed top-0 left-0 w-3.5 h-3.5 bg-[var(--red)] rounded-full z-50 pointer-events-none shadow-sm will-change-transform transform-gpu"
       />
 
-      {/* Outer Magnetic Ring (Pure Hardware-Accelerated DOM Ref) */}
+      {/* Outer Magnetic Ring */}
       <div
         ref={ringRef}
-        className="fixed top-0 left-0 w-10 h-10 border-2 border-[var(--ink)] rounded-full z-40 pointer-events-none opacity-70 will-change-transform transform-gpu transition-transform duration-100"
+        className="fixed top-0 left-0 w-10 h-10 border-2 border-[var(--ink)] rounded-full z-40 pointer-events-none opacity-75 will-change-transform transform-gpu"
       />
     </div>
   );
