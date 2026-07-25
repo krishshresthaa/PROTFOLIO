@@ -2,6 +2,8 @@
 
 let audioCtx = null;
 let soundEnabled = true;
+let cachedNoiseBuffer = null;
+let lastRustleTime = 0;
 
 const getAudioContext = () => {
   if (!audioCtx && typeof window !== 'undefined') {
@@ -22,22 +24,28 @@ export const setSoundEnabled = (enabled) => {
 
 export const isSoundEnabled = () => soundEnabled;
 
-// Paper Rustle Sound
+// Cached Paper Rustle Sound (Throttled & Non-Blocking)
 export const playPaperRustle = () => {
   if (!soundEnabled) return;
+  const now = Date.now();
+  if (now - lastRustleTime < 120) return; // Throttle sound triggers
+  lastRustleTime = now;
+
   try {
     const ctx = getAudioContext();
     if (!ctx) return;
 
-    const bufferSize = ctx.sampleRate * 0.08;
-    const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-    const data = buffer.getChannelData(0);
-    for (let i = 0; i < bufferSize; i++) {
-      data[i] = Math.random() * 2 - 1;
+    if (!cachedNoiseBuffer) {
+      const bufferSize = Math.floor(ctx.sampleRate * 0.06);
+      cachedNoiseBuffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+      const data = cachedNoiseBuffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        data[i] = Math.random() * 2 - 1;
+      }
     }
 
     const noise = ctx.createBufferSource();
-    noise.buffer = buffer;
+    noise.buffer = cachedNoiseBuffer;
 
     const filter = ctx.createBiquadFilter();
     filter.type = 'bandpass';
@@ -45,8 +53,8 @@ export const playPaperRustle = () => {
     filter.Q.setValueAtTime(3.0, ctx.currentTime);
 
     const gain = ctx.createGain();
-    gain.gain.setValueAtTime(0.04, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.07);
+    gain.gain.setValueAtTime(0.025, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.05);
 
     noise.connect(filter);
     filter.connect(gain);
@@ -69,17 +77,17 @@ export const playStampClick = () => {
     const gain = ctx.createGain();
 
     osc.type = 'triangle';
-    osc.frequency.setValueAtTime(150, ctx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(30, ctx.currentTime + 0.12);
+    osc.frequency.setValueAtTime(140, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(30, ctx.currentTime + 0.08);
 
-    gain.gain.setValueAtTime(0.3, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.12);
+    gain.gain.setValueAtTime(0.2, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
 
     osc.connect(gain);
     gain.connect(ctx.destination);
 
     osc.start();
-    osc.stop(ctx.currentTime + 0.12);
+    osc.stop(ctx.currentTime + 0.08);
   } catch (e) {
     // Ignore
   }
@@ -97,16 +105,16 @@ export const playPop = () => {
 
     osc.type = 'sine';
     osc.frequency.setValueAtTime(400, ctx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(800, ctx.currentTime + 0.05);
+    osc.frequency.exponentialRampToValueAtTime(800, ctx.currentTime + 0.04);
 
-    gain.gain.setValueAtTime(0.15, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.05);
+    gain.gain.setValueAtTime(0.1, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.04);
 
     osc.connect(gain);
     gain.connect(ctx.destination);
 
     osc.start();
-    osc.stop(ctx.currentTime + 0.05);
+    osc.stop(ctx.currentTime + 0.04);
   } catch (e) {
     // Ignore
   }

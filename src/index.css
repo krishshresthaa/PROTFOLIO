@@ -2,9 +2,9 @@
 
 @layer base {
   :root {
-    --concrete: #9a968d;
-    --concrete-a: #a19c92;
-    --concrete-b: #8b8579;
+    --concrete: #2c2722;
+    --concrete-a: #3a332d;
+    --concrete-b: #1f1b18;
     --craft: #e6d6b3;
     --craft-b: #d8c299;
     --paper: #faf7ee;
@@ -171,13 +171,28 @@
   box-shadow: 0 8px 18px rgba(0,0,0,0.25);
 }
 
-/* Background Grids & Textures */
+/* HIGH-END CREATIVE STUDIO DESK WORKSTATION BACKGROUND */
 .bg-desk-wood {
   background:
-    radial-gradient(ellipse at 30% 20%, rgba(255,255,255,0.08), transparent 55%),
-    repeating-linear-gradient(115deg, rgba(0,0,0,0.035) 0px, rgba(0,0,0,0.035) 1px, transparent 1px, transparent 3px),
-    repeating-linear-gradient(25deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 4px),
-    linear-gradient(160deg, var(--concrete-a), var(--concrete-b) 60%, var(--concrete));
+    /* Studio Desk Spotlight Radial Highlight */
+    radial-gradient(circle at 50% 15%, rgba(255,240,200,0.18) 0%, transparent 60%),
+    /* Designer Cutting Mat Grid Lines */
+    repeating-linear-gradient(0deg, transparent 0 39px, rgba(255,255,255,0.06) 39px 40px),
+    repeating-linear-gradient(90deg, transparent 0 39px, rgba(255,255,255,0.06) 39px 40px),
+    /* Subtle Woodgrain Diagonal Texture */
+    repeating-linear-gradient(135deg, rgba(0,0,0,0.06) 0px, rgba(0,0,0,0.06) 2px, transparent 2px, transparent 6px),
+    repeating-linear-gradient(45deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 8px),
+    /* Rich Dark Timber / Studio Workstation Base */
+    radial-gradient(ellipse at 50% 50%, #2e2822 0%, #1c1815 70%, #120f0d 100%);
+  background-color: #1c1815;
+}
+
+/* Designer Cutting Mat Accent Lines */
+.cutting-mat-grid {
+  background-image: 
+    linear-gradient(to right, rgba(0, 229, 255, 0.15) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 229, 255, 0.15) 1px, transparent 1px);
+  background-size: 20px 20px;
 }
 
 .bg-graph-paper {

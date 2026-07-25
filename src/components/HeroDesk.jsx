@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
-import { RefreshCw, Lightbulb, ArrowDown, FileText, Folder, Sparkles } from 'lucide-react';
+import { RefreshCw, Lightbulb, ArrowDown, FileText, Folder, Sparkles, Zap, SunMedium } from 'lucide-react';
 import { playPaperRustle, playStampClick, playPop } from '../utils/audioSynth';
 import { USER_INFO } from '../data/portfolioData';
 
@@ -51,84 +51,113 @@ export default function HeroDesk({ isLoaded = true, onOpenSketchpad, onOpenResum
     playPop();
   };
 
+  const toggleLamp = () => {
+    playStampClick();
+    setLampOn(!lampOn);
+  };
+
   // Title letters for staggered stamp animation
   const titleLetters = "PORTFOLIO".split("");
+
+  // Design Tokens Floating in Background
+  const floatingTokens = ['⌘Z', 'Ps', 'Ai', '72dpi', 'Px', 'Pt', 'Aa', '✎'];
 
   return (
     <header 
       onMouseMove={handleMouseMove}
-      className="relative min-h-[92vh] py-12 sm:py-16 px-3 sm:px-4 bg-desk-wood overflow-hidden select-none border-b-8 border-[var(--craft-b)] perspective-1000 max-w-full" 
+      className={`relative min-h-[92vh] py-12 sm:py-16 px-3 sm:px-4 bg-desk-wood overflow-hidden select-none border-b-8 border-[var(--craft-b)] perspective-1000 max-w-full transition-all duration-700 ${
+        lampOn ? 'brightness-100 contrast-100' : 'brightness-50 contrast-125 bg-stone-950'
+      }`} 
       id="home"
     >
       
-      {/* Floating Ambient Light Sparkles & Dust */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden z-10 opacity-50">
-        {[...Array(8)].map((_, i) => (
+      {/* REAL STUDIO DESK LAMP SPOTLIGHT CONE */}
+      <motion.div 
+        style={{
+          x: useTransform(parallaxX, (v) => v * -0.6),
+          y: useTransform(parallaxY, (v) => v * -0.6)
+        }}
+        className={`absolute -top-[15%] left-1/2 -translate-x-1/2 w-[700px] sm:w-[1400px] h-[700px] sm:h-[1400px] pointer-events-none transition-all duration-700 z-10 will-change-transform transform-gpu ${
+          lampOn ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
+        }`}
+      >
+        {/* Light Cone Ray Beam */}
+        <div className="w-full h-full rounded-full bg-[radial-gradient(ellipse_at_top,rgba(255,245,215,0.42)_0%,rgba(255,225,160,0.18)_35%,rgba(255,200,100,0.05)_60%,transparent_80%)] blur-md" />
+      </motion.div>
+
+      {/* PHYSICAL DESK LAMP FIXTURE & LED BULB */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 z-30 pointer-events-none flex flex-col items-center">
+        {/* Metal Lamp Arm */}
+        <div className="w-3 sm:w-4 h-8 sm:h-12 bg-gradient-to-b from-stone-800 to-stone-600 rounded-b shadow-md border-x border-stone-500" />
+        {/* Lamp Shade Dome */}
+        <div className="relative w-28 sm:w-44 h-10 sm:h-14 bg-gradient-to-b from-stone-900 via-stone-800 to-stone-900 rounded-t-full border-t-2 border-amber-400/40 shadow-2xl flex items-end justify-center pb-1">
+          {/* LED Glowing Bulb */}
+          <div 
+            className={`w-12 sm:w-20 h-3 sm:h-5 rounded-full transition-all duration-500 ${
+              lampOn 
+                ? 'bg-amber-100 shadow-[0_0_35px_12px_rgba(255,230,150,0.95)]' 
+                : 'bg-stone-700 shadow-none border border-stone-600'
+            }`} 
+          />
+        </div>
+      </div>
+
+      {/* Floating Design Tokens Particles */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden z-10 opacity-40">
+        {floatingTokens.map((token, i) => (
           <motion.div
             key={i}
-            className="absolute rounded-full bg-[var(--yellow)] blur-[1px] will-change-transform transform-gpu"
+            className="absolute font-mono-code font-bold text-xs sm:text-sm text-[var(--yellow)]/80 select-none will-change-transform transform-gpu"
             style={{
-              width: Math.random() * 6 + 3,
-              height: Math.random() * 6 + 3,
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`
+              left: `${10 + (i * 12)}%`,
+              top: `${20 + (i * 9)}%`
             }}
             animate={{
-              y: [0, -40, 0],
-              x: [0, Math.random() * 20 - 10, 0],
-              opacity: [0.2, 0.9, 0.2]
+              y: [0, -35, 0],
+              x: [0, (i % 2 === 0 ? 15 : -15), 0],
+              opacity: lampOn ? [0.3, 0.8, 0.3] : [0.1, 0.4, 0.1]
             }}
             transition={{
-              duration: Math.random() * 4 + 4,
+              duration: 5 + (i * 0.7),
               repeat: Infinity,
               ease: 'easeInOut',
-              delay: i * 0.3
+              delay: i * 0.2
             }}
-          />
+          >
+            {token}
+          </motion.div>
         ))}
       </div>
 
-      {/* Dynamic Parallax Desk Lamp Spotlight */}
-      <motion.div 
-        style={{
-          x: useTransform(parallaxX, (v) => v * -0.5),
-          y: useTransform(parallaxY, (v) => v * -0.5)
-        }}
-        className={`absolute -top-[20%] left-1/2 -translate-x-1/2 w-[800px] sm:w-[1300px] h-[800px] sm:h-[1300px] pointer-events-none transition-opacity duration-700 will-change-transform transform-gpu ${
-          lampOn ? 'opacity-100' : 'opacity-15'
-        }`}
-      >
-        <div className="w-full h-full rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.28)_0%,rgba(255,255,255,0.08)_40%,transparent_70%)]" />
-      </motion.div>
-
-      {/* Desk Control Bar */}
+      {/* DESK CONTROL BAR WITH WORKING DESK LAMP BUTTON */}
       <motion.div 
         initial={{ opacity: 0, y: -20 }}
         animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
         transition={{ delay: 0.1 }}
-        className="absolute top-4 sm:top-6 right-3 sm:right-6 z-30 flex items-center gap-2 sm:gap-3 bg-[var(--paper)]/90 backdrop-blur border-2 border-[var(--ink)] p-1.5 sm:p-2 rounded-lg shadow-md"
+        className="absolute top-4 sm:top-6 right-3 sm:right-6 z-40 flex items-center gap-2 sm:gap-3 bg-[var(--paper)]/95 backdrop-blur-md border-2 border-[var(--ink)] p-1.5 sm:p-2 rounded-lg shadow-xl"
       >
+        {/* DESK LAMP ON/OFF TOGGLE BUTTON */}
         <button
-          onClick={() => {
-            setLampOn(!lampOn);
-            playStampClick();
-          }}
-          className={`flex items-center gap-1 px-2 sm:px-3 py-1 text-[11px] sm:text-xs font-bold font-kalam rounded transition-colors ${
-            lampOn ? 'bg-[var(--yellow)] text-[#2b2620]' : 'bg-stone-300 text-stone-700'
+          onClick={toggleLamp}
+          className={`flex items-center gap-1.5 px-3 sm:px-4 py-1.5 text-xs sm:text-sm font-bold font-kalam rounded border-2 border-[var(--ink)] transition-all duration-300 shadow-md ${
+            lampOn 
+              ? 'bg-[var(--yellow)] text-[#2b2620] shadow-[0_0_15px_rgba(242,217,78,0.6)] scale-105' 
+              : 'bg-stone-800 text-amber-300 border-amber-500/50 hover:bg-stone-700'
           }`}
-          title="Toggle Desk Lamp Spotlight"
+          title="Toggle Studio Desk Lamp Spotlight"
         >
-          <Lightbulb className="w-3.5 h-3.5" />
-          <span className="hidden sm:inline">{lampOn ? 'Desk Lamp ON' : 'Desk Lamp OFF'}</span>
-          <span className="sm:hidden">{lampOn ? 'Lamp ON' : 'Lamp OFF'}</span>
+          <Lightbulb className={`w-4 h-4 ${lampOn ? 'text-[var(--red)] animate-pulse' : 'text-amber-400'}`} />
+          <span className="font-bold">
+            {lampOn ? 'Lamp: ON 💡' : 'Lamp: OFF 🌙'}
+          </span>
         </button>
 
         <button
           onClick={handleReset}
-          className="flex items-center gap-1 px-2 sm:px-3 py-1 text-[11px] sm:text-xs font-bold font-kalam border-2 border-[var(--ink)] rounded bg-[var(--craft)] hover:bg-[var(--ink)] hover:text-[var(--paper)] transition-colors text-[var(--ink)]"
+          className="flex items-center gap-1 px-2.5 sm:px-3 py-1.5 text-xs font-bold font-kalam border-2 border-[var(--ink)] rounded bg-[var(--craft)] hover:bg-[var(--ink)] hover:text-[var(--paper)] transition-colors text-[var(--ink)]"
           title="Reset dragged sticky notes back to position"
         >
-          <RefreshCw className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+          <RefreshCw className="w-3.5 h-3.5" />
           <span className="hidden sm:inline">Reset Desk</span>
           <span className="sm:hidden">Reset</span>
         </button>
