@@ -31,8 +31,8 @@ const PARTNERS = [
 ];
 
 export default function CollaborationMarquee({ theme }) {
-  // Duplicate array 3 times for continuous infinite loop
-  const marqueeItems = [...PARTNERS, ...PARTNERS, ...PARTNERS];
+  // Duplicate array for continuous infinite loop
+  const marqueeItems = [...PARTNERS, ...PARTNERS, ...PARTNERS, ...PARTNERS];
 
   const cardBg = theme === 'dark' ? '#22201c' : theme === 'blueprint' ? '#102e5c' : '#ffffff';
   const textColor = theme === 'dark' || theme === 'blueprint' ? '#ffffff' : '#2b2620';
@@ -56,34 +56,26 @@ export default function CollaborationMarquee({ theme }) {
         </div>
       </AnimatedSection>
 
-      {/* Infinite Horizontal Sliding Marquee Track */}
+      {/* Pure CSS GPU Hardware Accelerated Sliding Marquee Track */}
       <div className="relative w-full overflow-hidden flex py-4">
         
         {/* Left/Right Vignette Gradient Fades */}
         <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-[var(--paper)] to-transparent z-20 pointer-events-none" />
         <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[var(--paper)] to-transparent z-20 pointer-events-none" />
 
-        <motion.div
-          className="flex gap-8 items-center flex-nowrap"
-          animate={{ x: ['0%', '-33.33%'] }}
-          transition={{
-            repeat: Infinity,
-            ease: 'linear',
-            duration: 22
-          }}
-        >
+        <div className="flex gap-8 items-center flex-nowrap animate-marquee-gpu will-change-transform transform-gpu">
           {marqueeItems.map((item, index) => (
-            <motion.div
+            <div
               key={index}
-              whileHover={{ scale: 1.08, rotate: 0, zIndex: 30 }}
               style={{ backgroundColor: cardBg, color: textColor }}
-              className="flex-shrink-0 flex items-center gap-4 p-4 px-6 border-3 border-[var(--ink)] rounded-lg shadow-lg cursor-pointer -rotate-1 transition-transform"
+              className="flex-shrink-0 flex items-center gap-4 p-4 px-6 border-3 border-[var(--ink)] rounded-lg shadow-lg cursor-pointer -rotate-1 hover:scale-105 transition-transform duration-200"
             >
               <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-md border border-[var(--ink)]/30 overflow-hidden flex items-center justify-center p-2 shadow-inner">
                 <img
                   src={item.logo}
                   alt={item.name}
                   className="w-full h-full object-contain"
+                  loading="lazy"
                 />
               </div>
 
@@ -98,9 +90,9 @@ export default function CollaborationMarquee({ theme }) {
                   {item.category}
                 </span>
               </div>
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
+        </div>
       </div>
 
     </section>
