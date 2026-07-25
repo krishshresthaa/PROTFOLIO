@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Navbar from './components/Navbar';
 import HeroDesk from './components/HeroDesk';
 import WorkGallery from './components/WorkGallery';
@@ -17,6 +17,10 @@ export default function App() {
   const [soundOn, setSoundOn] = useState(true);
   const [sketchpadOpen, setSketchpadOpen] = useState(false);
   const [resumeOpen, setResumeOpen] = useState(false);
+
+  const handlePreloaderComplete = useCallback(() => {
+    setLoading(false);
+  }, []);
 
   useEffect(() => {
     // Apply theme class to document body
@@ -67,7 +71,7 @@ export default function App() {
       </div>
 
       {/* Animated Workspace Preloader */}
-      {loading && <Preloader onComplete={() => setLoading(false)} />}
+      {loading && <Preloader onComplete={handlePreloaderComplete} />}
 
       {/* Custom Interactive Mouse Cursor */}
       <CustomCursor />

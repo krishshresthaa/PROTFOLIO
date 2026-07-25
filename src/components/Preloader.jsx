@@ -1,10 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { USER_INFO } from '../data/portfolioData';
 
 export default function Preloader({ onComplete }) {
   const [progress, setProgress] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
+  const onCompleteRef = useRef(onComplete);
+
+  useEffect(() => {
+    onCompleteRef.current = onComplete;
+  }, [onComplete]);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -13,16 +18,26 @@ export default function Preloader({ onComplete }) {
           clearInterval(timer);
           setTimeout(() => {
             setIsFinished(true);
-            setTimeout(onComplete, 600);
-          }, 300);
+            if (onCompleteRef.current) onCompleteRef.current();
+          }, 200);
           return 100;
         }
-        return prev + Math.floor(Math.random() * 15) + 5;
+        return prev + 15;
       });
-    }, 120);
+    }, 40);
 
-    return () => clearInterval(timer);
-  }, [onComplete]);
+    // Safety Timeout: Force completion after 1.2s max
+    const safetyTimeout = setTimeout(() => {
+      clearInterval(timer);
+      setIsFinished(true);
+      if (onCompleteRef.current) onCompleteRef.current();
+    }, 1200);
+
+    return () => {
+      clearInterval(timer);
+      clearTimeout(safetyTimeout);
+    };
+  }, []);
 
   return (
     <AnimatePresence>
@@ -30,7 +45,7 @@ export default function Preloader({ onComplete }) {
         <motion.div
           initial={{ opacity: 1 }}
           exit={{ opacity: 0, y: -40 }}
-          transition={{ duration: 0.6, ease: 'easeInOut' }}
+          transition={{ duration: 0.4, ease: 'easeInOut' }}
           className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#faf7ee] text-[var(--ink)] font-kalam select-none p-6 bg-graph-paper"
         >
           {/* Decorative Desk Craft Card */}
@@ -53,7 +68,7 @@ export default function Preloader({ onComplete }) {
             {/* Progress Bar Container */}
             <div className="relative w-full h-4 bg-stone-200 border-2 border-[var(--ink)] rounded-full overflow-hidden mb-4 shadow-inner">
               <motion.div
-                className="h-full bg-[var(--red)] transition-all duration-200"
+                className="h-full bg-[var(--red)] transition-all duration-150"
                 style={{ width: `${Math.min(progress, 100)}%` }}
               />
             </div>
@@ -65,7 +80,7 @@ export default function Preloader({ onComplete }) {
 
             {progress >= 100 && (
               <motion.div
-                initial={{ scale: 2, opacity: 0, rotate: -15 }}
+                initial={{ scale: 1.5, opacity: 0, rotate: -15 }}
                 animate={{ scale: 1, opacity: 1, rotate: -4 }}
                 className="mt-6 inline-block font-marker text-xl text-emerald-700 border-3 border-emerald-700 px-4 py-1 rounded shadow-md"
               >

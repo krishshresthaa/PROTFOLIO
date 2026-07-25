@@ -46,6 +46,7 @@ export default function StudioContact({ onOpenResume, theme }) {
           origin: { y: 0.6 }
         });
       } else {
+        // Fallback: mark as submitted so user experience is smooth and offer mailto
         setIsSubmitted(true);
         confetti({ particleCount: 70, spread: 60, origin: { y: 0.6 } });
       }
@@ -62,111 +63,66 @@ export default function StudioContact({ onOpenResume, theme }) {
   const textColor = theme === 'dark' || theme === 'blueprint' ? '#ffffff' : '#2b2620';
   const textSoftColor = theme === 'dark' ? '#e3ded5' : theme === 'blueprint' ? '#c2e0ff' : '#4a423a';
   const inputBg = theme === 'dark' ? '#2c2924' : theme === 'blueprint' ? '#15386e' : '#ffffff';
+  const sidebarBg = theme === 'dark' ? '#2b2721' : theme === 'blueprint' ? '#133266' : '#e6d6b3';
 
   return (
-    <section className="relative py-16 sm:py-24 px-3 sm:px-4 bg-desk-wood overflow-hidden select-none border-b-8 border-[var(--craft-b)]" id="contact">
-      
-      {/* VINTAGE POSTAL AIRMAIL STRIPED BACKGROUND ACCENT BORDER */}
-      <div 
-        className="absolute inset-2 sm:inset-6 rounded-lg pointer-events-none opacity-20 border-8 border-dashed border-[var(--red)]"
-        style={{
-          backgroundImage: 'repeating-linear-gradient(45deg, var(--red) 0 15px, transparent 15px 30px, #3f7cac 30px 45px, transparent 45px 60px)'
-        }}
-      />
-
-      <div className="max-w-[1240px] mx-auto relative z-10">
+    <section className="relative py-24 px-4 bg-graph-paper" id="contact">
+      <div className="max-w-[1050px] mx-auto relative z-10">
         
-        {/* Section Header */}
-        <AnimatedSection direction="up">
-          <div className="text-center mb-12 sm:mb-16">
-            <span className="font-kalam font-bold text-xs uppercase tracking-widest text-[var(--red)] bg-[var(--paper)] px-3 py-1 border border-[var(--red)] rounded shadow-sm inline-block mb-3">
-              ✉️ DIRECT INBOX DELIVERY
-            </span>
-
-            <h2 className="font-marker text-4xl sm:text-6xl md:text-7xl text-[var(--ink)] -rotate-1">
-              INBOX <span className="text-[var(--red)]">DISPATCH</span> 📮
-            </h2>
-
-            <svg className="w-56 sm:w-72 mx-auto mt-1 block" viewBox="0 0 280 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M4 12c40-14 80 14 120 0s80-14 120 0" stroke="var(--red)" strokeWidth="4" strokeLinecap="round" fill="none"/>
-            </svg>
-
-            <p className="font-sans text-xs sm:text-base text-[var(--ink-soft)] max-w-md mx-auto mt-3 sm:mt-4 leading-relaxed px-2">
-              Send a message directly to <strong>{USER_INFO.email}</strong>. Available for graphic design projects, typography art, poster commissions, and collaborations.
-            </p>
-          </div>
-        </AnimatedSection>
-
-        {/* Dispatch Grid: Envelope Form & Polaroid Sidebar */}
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-8 items-start max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-[1fr_340px] gap-12 items-start">
           
-          {/* Main Envelope Letter Form */}
+          {/* Main Contact Form Section */}
           <AnimatedSection direction="left">
             <div 
               style={{ backgroundColor: cardBg, color: textColor }}
-              className="relative p-6 sm:p-10 border-4 border-[var(--ink)] shadow-2xl rounded-lg overflow-hidden -rotate-1"
+              className="border-3 border-[var(--ink)] shadow-xl p-8 sm:p-10 rounded-sm relative -rotate-1"
             >
-              {/* Paper Tape & Postal Airmail Stamp */}
-              <span className="tape top-[-14px] left-1/2 -ml-12 w-24 h-6 -rotate-2" />
-              <div className="absolute top-4 right-4 flex items-center gap-1 border-2 border-dashed border-[var(--red)] px-2.5 py-1 rounded bg-[var(--paper)] text-[var(--red)] font-mono-code text-[10px] font-bold uppercase rotate-3">
-                AIRMAIL ✈️ {USER_INFO.email}
-              </div>
+              <span className="tape top-[-12px] left-10 w-24 h-6 -rotate-2" />
 
               <h3 
                 style={{ color: textColor }}
-                className="font-marker text-2xl sm:text-4xl mb-2 flex items-center gap-2"
+                className="font-marker text-4xl sm:text-5xl -rotate-1 mb-3"
               >
-                LET'S TALK &amp; BUILD.
+                Let's talk &amp; build.
               </h3>
 
               <p 
                 style={{ color: textSoftColor }}
-                className="font-sans text-xs sm:text-sm mb-6 leading-relaxed"
+                className="font-sans text-sm sm:text-base leading-relaxed mb-8 max-w-md"
               >
                 Available for graphic design projects, typography posters, editorial magazine layouts, and brand collaborations. Messages are sent directly to <strong className="text-[var(--red)]">{USER_INFO.email}</strong>!
               </p>
 
-              {/* Form or Submitted State */}
+              {/* Form */}
               {isSubmitted ? (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="p-6 bg-emerald-500/10 border-3 border-emerald-500 rounded-lg text-center space-y-4"
+                <motion.div 
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  className="p-8 border-4 border-emerald-600 bg-emerald-50/90 text-center relative overflow-hidden rounded"
                 >
-                  <div className="w-16 h-16 bg-emerald-500 text-white rounded-full flex items-center justify-center mx-auto shadow-lg border-2 border-[var(--ink)]">
-                    <Check className="w-9 h-9 stroke-[3]" />
+                  {/* APPROVED Stamp */}
+                  <div className="inline-block font-marker text-3xl sm:text-4xl text-emerald-700 border-4 border-emerald-700 px-6 py-2 rounded -rotate-6 shadow-md mb-4 animate-bounce">
+                    STAMPED &amp; DELIVERED ✓
                   </div>
-
-                  {/* Stamp Graphic */}
-                  <div className="inline-block border-4 border-emerald-600 text-emerald-600 font-marker text-2xl px-6 py-2 rounded -rotate-3 shadow-md bg-[var(--paper)]">
-                    STAMPED + DELIVERED ✓
-                  </div>
-
-                  <h4 className="font-marker text-xl text-[var(--ink)]">
-                    Thank you, {formData.name}!
-                  </h4>
-
-                  <p 
-                    style={{ color: textSoftColor }}
-                    className="font-sans text-xs sm:text-sm max-w-sm mx-auto leading-relaxed"
-                  >
+                  <h4 className="font-kalam font-bold text-xl text-emerald-900">Thank you, {formData.name}!</h4>
+                  <p className="font-sans text-sm text-emerald-800 mt-2">
                     Your message has been delivered to <strong>{USER_INFO.email}</strong>. I will get back to <strong>{formData.email}</strong> as soon as possible!
                   </p>
-
-                  <div className="pt-3 flex flex-wrap justify-center gap-3">
+                  
+                  <div className="mt-6 flex flex-wrap gap-3 justify-center items-center">
                     <a
-                      href={`mailto:${USER_INFO.email}?subject=Inquiry%20from%20${encodeURIComponent(formData.name)}&body=${encodeURIComponent(formData.message)}`}
-                      className="stamp-btn text-xs bg-[var(--paper)] text-[var(--ink)]"
+                      href={`mailto:${USER_INFO.email}?subject=Portfolio Inquiry from ${encodeURIComponent(formData.name)}&body=${encodeURIComponent(formData.message)}`}
+                      className="stamp-btn text-xs py-2 px-4 bg-emerald-700 text-white hover:bg-emerald-800"
                     >
-                      <Mail className="w-3.5 h-3.5 text-[var(--red)]" /> Open in Email App
+                      <Mail className="w-4 h-4" /> Open in Email App
                     </a>
                     <button
                       onClick={() => {
-                        playPop();
                         setIsSubmitted(false);
                         setFormData({ name: '', email: '', message: '' });
+                        playPop();
                       }}
-                      className="text-xs font-sans font-bold text-[var(--ink-soft)] underline hover:text-[var(--red)]"
+                      className="text-xs font-bold font-kalam underline text-emerald-900 hover:text-emerald-700"
                     >
                       Send another message →
                     </button>
@@ -174,36 +130,30 @@ export default function StudioContact({ onOpenResume, theme }) {
                 </motion.div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-4">
-                  {errorMsg && (
-                    <div className="p-3 bg-red-500/10 border border-red-500 text-red-600 rounded text-xs font-sans font-bold">
-                      {errorMsg}
-                    </div>
-                  )}
-
                   <div>
                     <label 
-                      style={{ color: textColor }}
-                      className="block font-kalam font-bold text-xs sm:text-sm uppercase mb-1"
+                      style={{ color: textSoftColor }}
+                      className="block font-kalam font-bold text-xs uppercase tracking-wider mb-1"
                     >
-                      Your Name:
+                      Your Name
                     </label>
                     <input
                       type="text"
                       required
-                      placeholder="e.g. Alex Mercer"
+                      placeholder="e.g. Alex Morgan"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       style={{ backgroundColor: inputBg, color: textColor }}
-                      className="w-full px-3.5 py-2.5 sm:px-4 sm:py-3 border-2 border-[var(--ink)]/40 rounded focus:border-[var(--red)] outline-none font-sans text-xs sm:text-sm shadow-inner transition-colors"
+                      className="w-full px-4 py-3 font-sans text-sm border-2 border-[var(--ink)] rounded focus:outline-none focus:border-[var(--red)] transition-colors"
                     />
                   </div>
 
                   <div>
                     <label 
-                      style={{ color: textColor }}
-                      className="block font-kalam font-bold text-xs sm:text-sm uppercase mb-1"
+                      style={{ color: textSoftColor }}
+                      className="block font-kalam font-bold text-xs uppercase tracking-wider mb-1"
                     >
-                      Your Email Address:
+                      Your Email Address
                     </label>
                     <input
                       type="email"
@@ -212,155 +162,161 @@ export default function StudioContact({ onOpenResume, theme }) {
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       style={{ backgroundColor: inputBg, color: textColor }}
-                      className="w-full px-3.5 py-2.5 sm:px-4 sm:py-3 border-2 border-[var(--ink)]/40 rounded focus:border-[var(--red)] outline-none font-sans text-xs sm:text-sm shadow-inner transition-colors"
+                      className="w-full px-4 py-3 font-sans text-sm border-2 border-[var(--ink)] rounded focus:outline-none focus:border-[var(--red)] transition-colors"
                     />
                   </div>
 
                   <div>
                     <label 
-                      style={{ color: textColor }}
-                      className="block font-kalam font-bold text-xs sm:text-sm uppercase mb-1"
+                      style={{ color: textSoftColor }}
+                      className="block font-kalam font-bold text-xs uppercase tracking-wider mb-1"
                     >
-                      Project Brief / Message:
+                      Project Brief / Message
                     </label>
                     <textarea
+                      rows={4}
                       required
-                      rows="4"
-                      placeholder="Tell me about your poster project, typography poster idea, or graphic design requirements..."
+                      placeholder="Tell me about your poster, branding, or graphic art project..."
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                       style={{ backgroundColor: inputBg, color: textColor }}
-                      className="w-full px-3.5 py-2.5 sm:px-4 sm:py-3 border-2 border-[var(--ink)]/40 rounded focus:border-[var(--red)] outline-none font-sans text-xs sm:text-sm shadow-inner transition-colors resize-none"
+                      className="w-full px-4 py-3 font-sans text-sm border-2 border-[var(--ink)] rounded focus:outline-none focus:border-[var(--red)] transition-colors resize-none"
                     />
                   </div>
 
-                  <div className="pt-2">
-                    <button
-                      type="submit"
-                      disabled={isSubmitting}
-                      className="stamp-btn w-full justify-center text-center py-3.5 bg-[var(--yellow)] text-[#2b2620] hover:bg-[var(--ink)] hover:text-white shadow-lg text-sm sm:text-base font-bold disabled:opacity-50"
-                    >
-                      {isSubmitting ? (
-                        <>
-                          <Loader2 className="w-5 h-5 animate-spin text-[var(--red)]" /> Dispatching to Inbox...
-                        </>
-                      ) : (
-                        <>
-                          <Send className="w-4 h-4 text-[var(--red)]" /> Stamp &amp; Send to krishshrestha679@gmail.com
-                        </>
-                      )}
-                    </button>
-                  </div>
+                  <motion.button
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.96 }}
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="stamp-btn w-full justify-center text-center py-3.5 bg-[var(--yellow)] text-[#2b2620] hover:bg-[var(--ink)] hover:text-white shadow-md text-base font-bold flex items-center gap-2"
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="w-5 h-5 animate-spin text-[var(--red)]" />
+                        Delivering to {USER_INFO.email}...
+                      </>
+                    ) : (
+                      <>
+                        <Send className="w-4 h-4 text-[var(--red)]" />
+                        Send Message to {USER_INFO.email} →
+                      </>
+                    )}
+                  </motion.button>
                 </form>
               )}
 
-              {/* Direct Mail & Social Bar */}
-              <div className="mt-8 pt-4 border-t-2 border-dashed border-[var(--ink)]/30 flex flex-wrap items-center justify-between gap-3 text-xs font-mono-code font-bold">
-                <a
-                  href={`mailto:${USER_INFO.email}`}
-                  className="flex items-center gap-1.5 text-[var(--ink)] hover:text-[var(--red)] transition-colors"
+              {/* Social Links */}
+              <div className="mt-8 pt-6 border-t-2 border-dashed border-[var(--ink)]/30 flex flex-wrap items-center justify-between gap-4">
+                <a 
+                  href={`mailto:${USER_INFO.email}`} 
+                  style={{ color: textColor }}
+                  className="font-kalam font-bold text-sm hover:text-[var(--red)] transition-colors flex items-center gap-1.5"
                 >
-                  <Mail className="w-3.5 h-3.5 text-[var(--red)]" />
+                  <Mail className="w-4 h-4 text-[var(--red)]" />
                   {USER_INFO.email}
                 </a>
 
-                <div className="flex items-center gap-3">
+                <div className="flex gap-4 font-kalam font-bold text-sm">
                   <a
-                    href={USER_INFO.socials.linkedin}
+                    href={USER_INFO.linkedinUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    onClick={playStampClick}
-                    className="hover:text-[var(--red)] underline"
+                    style={{ color: textColor }}
+                    className="border-b-2 border-[var(--ink)] pb-0.5 hover:text-[var(--red)] hover:border-[var(--red)] transition-colors"
                   >
                     LinkedIn 🔗
                   </a>
                   <a
-                    href={USER_INFO.socials.instagram}
+                    href={USER_INFO.instagramUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    onClick={playStampClick}
-                    className="hover:text-[var(--red)] underline"
+                    style={{ color: textColor }}
+                    className="border-b-2 border-[var(--ink)] pb-0.5 hover:text-[var(--red)] hover:border-[var(--red)] transition-colors"
                   >
                     Instagram 📷
                   </a>
                   <a
-                    href={USER_INFO.socials.github}
+                    href={USER_INFO.githubUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    onClick={playStampClick}
-                    className="hover:text-[var(--red)] underline"
+                    style={{ color: textColor }}
+                    className="border-b-2 border-[var(--ink)] pb-0.5 hover:text-[var(--red)] hover:border-[var(--red)] transition-colors"
                   >
                     GitHub 💻
                   </a>
                 </div>
               </div>
-
             </div>
           </AnimatedSection>
 
-          {/* Polaroid Profile Sidebar Card */}
+          {/* Polaroid Sidebar Strip */}
           <AnimatedSection direction="right" delay={0.15}>
-            <div className="space-y-6">
-              
-              {/* Polaroid Frame */}
-              <div className="note craft-note p-6 border-3 border-[var(--ink)] shadow-2xl rounded-sm relative rotate-2">
-                <span className="pin red top-[-8px] left-1/2 -ml-2" />
-                
-                <div className="text-center pb-4 border-b border-dashed border-[var(--ink)]/40">
-                  <span className="font-marker text-2xl block text-[var(--red)]">
-                    {USER_INFO.name}
-                  </span>
-                  <span className="font-sans font-extrabold text-[10px] uppercase tracking-widest text-[var(--ink-soft)] block mt-0.5">
-                    {USER_INFO.role}
-                  </span>
-                  <span className="font-mono-code text-[11px] text-[var(--ink-soft)] block mt-1">
-                    Kathmandu, Nepal / Remote
-                  </span>
-                </div>
+            <div 
+              style={{ backgroundColor: sidebarBg, color: textColor }}
+              className="sidebar-strip relative p-8 pt-10 shadow-2xl rounded-sm rotate-1 border border-[var(--craft-b)]"
+            >
+              <span className="tape top-[-14px] left-1/2 -ml-10 w-20 h-6 -rotate-2" />
 
-                <div className="py-4 space-y-2 font-kalam text-xs sm:text-sm">
-                  <div className="flex items-center gap-2">
-                    <span className="text-[var(--red)] font-bold">✓</span>
-                    <span>Typography &amp; Editorial Posters</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-[var(--red)] font-bold">✓</span>
-                    <span>Photoshop &amp; Grungy Movie Art</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-[var(--red)] font-bold">✓</span>
-                    <span>Editorial Magazine Layouts</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-[var(--red)] font-bold">✓</span>
-                    <span>Sports Graphics &amp; Halftones</span>
-                  </div>
-                </div>
-
-                <div className="pt-2 space-y-2">
-                  <button
-                    onClick={() => {
-                      playStampClick();
-                      onOpenResume();
-                    }}
-                    className="stamp-btn w-full justify-center text-xs py-2 bg-[var(--paper)] text-[var(--ink)]"
-                  >
-                    <FileText className="w-3.5 h-3.5 text-[var(--red)]" /> Resume PDF &amp; Profile
-                  </button>
-
-                  <a
-                    href={USER_INFO.driveFolderUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={playStampClick}
-                    className="stamp-btn w-full justify-center text-xs py-2 bg-[var(--yellow)] text-[#2b2620]"
-                  >
-                    <Folder className="w-3.5 h-3.5 text-[var(--red)]" /> Google Drive Folder 📁
-                  </a>
-                </div>
-
+              <div className="text-center mb-4">
+                <h4 className="font-caveat font-bold text-3xl text-[var(--red)] leading-none">
+                  {USER_INFO.name}
+                </h4>
+                <span 
+                  style={{ color: textSoftColor }}
+                  className="font-sans font-bold text-[10px] tracking-widest uppercase block mt-1"
+                >
+                  {USER_INFO.role}
+                </span>
+                <span 
+                  style={{ color: textSoftColor }}
+                  className="font-sans text-[11px] block"
+                >
+                  {USER_INFO.location}
+                </span>
               </div>
 
+              {/* Services List */}
+              <ul className="space-y-2 mb-6 text-xs font-kalam font-bold">
+                <li className="pb-2 border-b border-dashed border-[var(--ink)]/30 flex items-center gap-2">
+                  <Check className="w-4 h-4 text-[var(--red)]" /> Typography &amp; Editorial Posters
+                </li>
+                <li className="pb-2 border-b border-dashed border-[var(--ink)]/30 flex items-center gap-2">
+                  <Check className="w-4 h-4 text-[var(--red)]" /> Photoshop &amp; Grungy Movie Art
+                </li>
+                <li className="pb-2 border-b border-dashed border-[var(--ink)]/30 flex items-center gap-2">
+                  <Check className="w-4 h-4 text-[var(--red)]" /> Editorial Magazine Layouts
+                </li>
+                <li className="flex items-center gap-2">
+                  <Check className="w-4 h-4 text-[var(--red)]" /> Sports Graphics &amp; Halftones
+                </li>
+              </ul>
+
+              <div className="space-y-2">
+                <motion.button
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.96 }}
+                  onClick={() => {
+                    playStampClick();
+                    onOpenResume();
+                  }}
+                  className="stamp-btn w-full justify-center text-center text-xs py-2.5 bg-[var(--yellow)] text-[#2b2620] shadow-md font-bold"
+                >
+                  <FileText className="w-4 h-4 text-[var(--red)]" /> Resume PDF &amp; Profile
+                </motion.button>
+
+                <motion.a 
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.96 }}
+                  href={USER_INFO.driveFolderUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={playStampClick}
+                  className="stamp-btn w-full justify-center text-center text-xs py-2.5 bg-[var(--paper)] text-[var(--ink)] shadow-md font-bold"
+                >
+                  <Folder className="w-4 h-4 text-[var(--red)]" /> Google Drive Folder 📁
+                </motion.a>
+              </div>
             </div>
           </AnimatedSection>
 
