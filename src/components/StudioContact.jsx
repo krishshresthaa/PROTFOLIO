@@ -66,12 +66,51 @@ export default function StudioContact({ onOpenResume, theme }) {
   const sidebarBg = theme === 'dark' ? '#2b2721' : theme === 'blueprint' ? '#133266' : '#e6d6b3';
 
   return (
-    <section className="relative py-24 px-4 bg-graph-paper" id="contact">
+    <section className="relative py-24 px-4 bg-graph-paper overflow-hidden" id="contact">
+      
+      {/* 🕷️ SPIDER-WOMAN (GWEN) HANGING FROM CEILING */}
+      <motion.div
+        initial={{ y: -200, opacity: 0 }}
+        whileInView={{ y: 0, opacity: 1 }}
+        viewport={{ once: false, amount: 0.1 }}
+        transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
+        className="absolute left-4 sm:left-12 lg:left-24 top-0 z-30 pointer-events-none w-36 sm:w-56 md:w-64 drop-shadow-[0_15px_25px_rgba(0,0,0,0.5)]"
+      >
+        {/* Solid Web Line Connecting All The Way Up To Section Ceiling Border */}
+        <div className="absolute top-[-800px] left-1/2 -ml-[1.5px] w-[3px] h-[920px] bg-white/95 shadow-[0_0_10px_#fff]" />
+        
+        {/* Upside Down Spider-Woman Swinging Artwork */}
+        <motion.img
+          animate={{ rotate: [-3, 3, -3], x: [-2, 2, -2] }}
+          transition={{ repeat: Infinity, duration: 3.5, ease: "easeInOut" }}
+          src="/gwen-hanging-contact.png"
+          alt="Spider-Woman Hanging Upside Down"
+          className="w-full h-auto object-contain transform-gpu"
+        />
+      </motion.div>
+
+      {/* 🕷️ SPIDER-MAN STICKING DIRECTLY TO THE RIGHT WALL - LARGER & FLUSH TO WALL */}
+      <motion.div
+        initial={{ scale: 0.8, opacity: 0, x: 80 }}
+        whileInView={{ scale: 1, opacity: 1, x: 0 }}
+        viewport={{ once: false, amount: 0.1 }}
+        transition={{ duration: 0.9, ease: "easeOut", delay: 0.3 }}
+        className="absolute -right-4 sm:-right-8 md:-right-12 top-[12%] z-30 pointer-events-none w-56 sm:w-80 md:w-[420px] h-auto drop-shadow-[-15px_20px_35px_rgba(194,42,31,0.5)]"
+      >
+        <motion.img
+          animate={{ y: [-4, 4, -4], rotate: [-1, 1, -1] }}
+          transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
+          src="/spidey-wall-contact.png"
+          alt="Spider-Man Sticking Directly to Right Wall"
+          className="w-full h-auto object-contain object-right transform-gpu"
+        />
+      </motion.div>
+
       <div className="max-w-[1050px] mx-auto relative z-10">
         
-        <div className="grid grid-cols-1 md:grid-cols-[1fr_340px] gap-12 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-[1fr_340px] gap-12 items-start relative">
           
-          {/* Main Contact Form Section */}
+          {/* Main Contact Form Section ("Let's Talk & Build" Card) */}
           <AnimatedSection direction="left">
             <div 
               style={{ backgroundColor: cardBg, color: textColor }}

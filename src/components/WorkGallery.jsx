@@ -32,57 +32,49 @@ function SpiderBlueprintWeb() {
   );
 }
 
-/* USER-PROVIDED RED SPIDER-MAN RIGHT PEEKING COMIC PAINTING */
+/* SUBTLE SPIDER-MAN RIGHT PEEKING COMIC CUTOUT */
 function SpideyRightPeeker({ scrollProgress }) {
-  // TranslateX mapping: 120% (hidden off screen) -> 12% (peeking out) -> 120% (vanished)
+  // TranslateX mapping: 100% (hidden off screen) -> 5% (tucked subtle peek) -> 100% (vanished)
   const x = useTransform(
     scrollProgress,
-    [0.08, 0.20, 0.38, 0.48],
-    ['120%', '12%', '12%', '120%']
+    [0.05, 0.18, 0.40, 0.52],
+    ['100%', '5%', '5%', '100%']
   );
 
   return (
     <motion.div
       style={{ x }}
-      className="fixed right-0 top-[22%] z-40 pointer-events-none w-48 sm:w-72 h-72 sm:h-96 drop-shadow-[0_15px_30px_rgba(194,42,31,0.5)] will-change-transform transform-gpu"
+      className="fixed right-0 top-[20%] z-40 pointer-events-none w-48 sm:w-[280px] h-72 sm:h-[380px] drop-shadow-[0_10px_25px_rgba(194,42,31,0.35)] will-change-transform transform-gpu"
     >
-      {/* Hanging Web Thread */}
-      <div className="absolute top-0 right-12 w-1 h-32 bg-white/80 shadow-[0_0_10px_#fff]" />
-
-      {/* User's Classic Red Spider-Man Painting */}
+      {/* User's High-Resolution Red Spider-Man Painting Cutout */}
       <img
         src="/spidey-red.png"
         alt="Spider-Man Peeking Right"
-        className="w-full h-full object-contain object-right border-4 border-[#1a1512] rounded-l-2xl shadow-2xl bg-gradient-to-r from-transparent to-[#1a1512]/30"
+        className="w-full h-full object-contain object-right"
       />
     </motion.div>
   );
 }
 
-/* USER-PROVIDED SYMBIOTE BLACK SUIT SPIDER-MAN LEFT PEEKING COMIC PAINTING */
-function SpideyLeftPeeker({ scrollProgress }) {
-  // TranslateX mapping: -120% (hidden off screen) -> -12% (peeking out) -> -120% (vanished)
+/* SUBTLE VENOM LEFT PEEKING COMIC CUTOUT */
+function VenomLeftPeeker({ scrollProgress }) {
+  // TranslateX mapping: -100% (hidden off screen) -> -5% (tucked subtle peek) -> -100% (vanished)
   const x = useTransform(
     scrollProgress,
-    [0.50, 0.62, 0.80, 0.92],
-    ['-120%', '-12%', '-12%', '-120%']
+    [0.48, 0.60, 0.82, 0.95],
+    ['-100%', '-5%', '-5%', '-100%']
   );
 
   return (
     <motion.div
       style={{ x }}
-      className="fixed left-0 top-[30%] z-40 pointer-events-none w-48 sm:w-72 h-72 sm:h-96 drop-shadow-[0_15px_30px_rgba(0,0,0,0.7)] will-change-transform transform-gpu"
+      className="fixed left-0 top-[24%] z-40 pointer-events-none w-48 sm:w-[280px] h-72 sm:h-[380px] drop-shadow-[0_10px_30px_rgba(0,0,0,0.7)] will-change-transform transform-gpu"
     >
-      {/* Spider-Sense Alarm Lines */}
-      <div className="absolute -top-6 left-12 font-marker text-2xl text-[var(--red)] font-bold tracking-widest animate-bounce">
-        /// SPIDEY-SENSE
-      </div>
-
-      {/* User's Black Symbiote Spider-Man Painting */}
+      {/* User's High-Resolution Venom Painting Cutout */}
       <img
         src="/spidey-black.png"
-        alt="Symbiote Spider-Man Peeking Left"
-        className="w-full h-full object-contain object-left border-4 border-[#1a1512] rounded-r-2xl shadow-2xl bg-gradient-to-l from-transparent to-[#1a1512]/40"
+        alt="Venom Peeking Left"
+        className="w-full h-full object-contain object-left"
       />
     </motion.div>
   );
@@ -231,9 +223,9 @@ export default function WorkGallery({ theme }) {
   return (
     <section ref={sectionRef} className="relative py-16 sm:py-24 px-3 sm:px-4 bg-graph-paper border-t-8 border-b-8 border-[var(--craft-b)] overflow-hidden max-w-full" id="work">
       
-      {/* SCROLL-DRIVEN USER SPIDER-MAN COMIC PAINTINGS */}
+      {/* SCROLL-DRIVEN CLEAN TRANSPARENT SPIDER-MAN & VENOM CUTOUTS */}
       <SpideyRightPeeker scrollProgress={scrollYProgress} />
-      <SpideyLeftPeeker scrollProgress={scrollYProgress} />
+      <VenomLeftPeeker scrollProgress={scrollYProgress} />
 
       {/* Sleek Spider Blueprint Web Grid Background */}
       <SpiderBlueprintWeb />
@@ -269,7 +261,7 @@ export default function WorkGallery({ theme }) {
               style={{ color: textSoftColor }}
               className="font-sans text-xs sm:text-base max-w-lg mt-3 sm:mt-4 leading-relaxed"
             >
-              A showcase of typography posters, editorial magazine covers, Spider-Man cinematic art, and visual graphic design — crafted with precision in Photoshop &amp; Illustrator.
+              A showcase of typography posters, editorial magazine covers, Spider-Man &amp; Venom cinematic art, and visual graphic design — crafted with precision in Photoshop &amp; Illustrator.
             </p>
           </div>
         </AnimatedSection>
