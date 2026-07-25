@@ -4,7 +4,7 @@ import { PROJECTS_DATA, USER_INFO } from '../data/portfolioData';
 import { playPaperRustle, playStampClick } from '../utils/audioSynth';
 import ProjectModal from './ProjectModal';
 import AnimatedSection from './AnimatedSection';
-import { ExternalLink, Folder, Sparkles, Eye, ShieldAlert } from 'lucide-react';
+import { ExternalLink, Folder, Sparkles, Eye } from 'lucide-react';
 
 const CATEGORIES = [
   'All', 
@@ -14,69 +14,28 @@ const CATEGORIES = [
   'Sports & Halftone Art'
 ];
 
-/* SPIDER-WEB SVG CORNER GRAPHICS */
-function SpiderWebTopLeft() {
+/* SLEEK SPIDER BLUEPRINT RADIAL WEB BACKGROUND */
+function SpiderBlueprintWeb() {
   return (
-    <svg 
-      className="absolute top-0 left-0 w-36 sm:w-64 h-36 sm:h-64 pointer-events-none opacity-40 z-0 text-[var(--ink)]" 
-      viewBox="0 0 200 200" 
-      fill="none" 
-      stroke="currentColor" 
-      strokeWidth="1.2"
-    >
-      <path d="M0 0 L200 0 M0 0 L0 200 M0 0 L200 200 M0 0 L150 200 M0 0 L200 150 M0 0 L80 200 M0 0 L200 80" />
-      <path d="M30 0 Q 30 30 0 30 M60 0 Q 60 60 0 60 M100 0 Q 100 100 0 100 M140 0 Q 140 140 0 140 M180 0 Q 180 180 0 180" />
-      <path d="M45 0 Q 45 45 0 45 M80 0 Q 80 80 0 80 M120 0 Q 120 120 0 120 M160 0 Q 160 160 0 160" strokeDasharray="3 3" />
-    </svg>
+    <div className="absolute inset-0 pointer-events-none opacity-20 z-0 flex items-center justify-center overflow-hidden">
+      <svg className="w-[800px] h-[800px] text-[var(--red)]" viewBox="0 0 500 500" fill="none" stroke="currentColor" strokeWidth="0.8">
+        {/* Concentric Web Octagons */}
+        <polygon points="250,50 391,108 450,250 391,391 250,450 108,391 50,250 108,108" strokeDasharray="4 4" />
+        <polygon points="250,100 356,143 400,250 356,356 250,400 143,356 100,250 143,143" />
+        <polygon points="250,150 320,179 350,250 320,320 250,350 179,320 150,250 179,179" strokeDasharray="3 3" />
+        <polygon points="250,190 292,207 310,250 292,292 250,310 207,292 190,250 207,207" />
+        
+        {/* Radial Web Rays */}
+        <line x1="250" y1="0" x2="250" y2="500" />
+        <line x1="0" y1="250" x2="500" y2="250" />
+        <line x1="73" y1="73" x2="426" y2="426" />
+        <line x1="426" y1="73" x2="73" y2="426" />
+      </svg>
+    </div>
   );
 }
 
-function SpiderWebTopRight() {
-  return (
-    <svg 
-      className="absolute top-0 right-0 w-36 sm:w-64 h-36 sm:h-64 pointer-events-none opacity-40 z-0 text-[var(--ink)] scale-x-[-1]" 
-      viewBox="0 0 200 200" 
-      fill="none" 
-      stroke="currentColor" 
-      strokeWidth="1.2"
-    >
-      <path d="M0 0 L200 0 M0 0 L0 200 M0 0 L200 200 M0 0 L150 200 M0 0 L200 150 M0 0 L80 200 M0 0 L200 80" />
-      <path d="M30 0 Q 30 30 0 30 M60 0 Q 60 60 0 60 M100 0 Q 100 100 0 100 M140 0 Q 140 140 0 140 M180 0 Q 180 180 0 180" />
-    </svg>
-  );
-}
-
-function SpiderWebBottomLeft() {
-  return (
-    <svg 
-      className="absolute bottom-0 left-0 w-36 sm:w-64 h-36 sm:h-64 pointer-events-none opacity-35 z-0 text-[var(--ink)] scale-y-[-1]" 
-      viewBox="0 0 200 200" 
-      fill="none" 
-      stroke="currentColor" 
-      strokeWidth="1.2"
-    >
-      <path d="M0 0 L200 0 M0 0 L0 200 M0 0 L200 200 M0 0 L150 200 M0 0 L200 150" />
-      <path d="M30 0 Q 30 30 0 30 M60 0 Q 60 60 0 60 M100 0 Q 100 100 0 100 M140 0 Q 140 140 0 140" />
-    </svg>
-  );
-}
-
-function SpiderWebBottomRight() {
-  return (
-    <svg 
-      className="absolute bottom-0 right-0 w-36 sm:w-64 h-36 sm:h-64 pointer-events-none opacity-35 z-0 text-[var(--ink)] scale-x-[-1] scale-y-[-1]" 
-      viewBox="0 0 200 200" 
-      fill="none" 
-      stroke="currentColor" 
-      strokeWidth="1.2"
-    >
-      <path d="M0 0 L200 0 M0 0 L0 200 M0 0 L200 200 M0 0 L150 200 M0 0 L200 150" />
-      <path d="M30 0 Q 30 30 0 30 M60 0 Q 60 60 0 60 M100 0 Q 100 100 0 100 M140 0 Q 140 140 0 140" />
-    </svg>
-  );
-}
-
-/* 3D PARALLAX TILT PROJECT CARD COMPONENT WITH SPIDEY ACCENTS */
+/* 3D PARALLAX TILT PROJECT CARD COMPONENT */
 function ProjectCard({ project, idx, theme, onClick }) {
   const cardRef = useRef(null);
 
@@ -133,17 +92,17 @@ function ProjectCard({ project, idx, theme, onClick }) {
         backgroundColor: cardBg,
         color: textColor
       }}
-      className={`frame relative p-4 sm:p-5 pb-10 sm:pb-12 shadow-2xl border-3 border-[var(--ink)] cursor-pointer rounded-sm group transition-shadow duration-300 w-full max-w-full ${
-        isSpideyCard ? 'ring-4 ring-[var(--red)]/60 shadow-[0_0_25px_rgba(194,42,31,0.25)]' : ''
+      className={`frame relative p-4 sm:p-5 pb-10 sm:pb-12 shadow-2xl border-3 border-[var(--ink)] cursor-pointer rounded-sm group transition-all duration-300 w-full max-w-full ${
+        isSpideyCard ? 'ring-3 ring-[var(--red)]/70 shadow-[0_0_20px_rgba(194,42,31,0.2)]' : ''
       }`}
     >
-      {/* Spider-Man Web Overlay Tape Accent */}
+      {/* Dynamic Paper Tape Accent */}
       <motion.div 
         whileHover={{ rotate: 5, scale: 1.1 }}
         className="tape top-[-12px] left-1/2 -ml-8 w-20 h-6 -rotate-3 z-20 pointer-events-none" 
       />
 
-      {/* Spider-Man Badge on Spidey Poster */}
+      {/* Spider-Man Special Badge Tag */}
       {isSpideyCard && (
         <span className="absolute top-[-10px] right-3 z-30 font-kalam font-bold text-[10px] sm:text-xs bg-[var(--red)] text-white px-2.5 py-0.5 rounded shadow-lg border border-white/40 flex items-center gap-1">
           🕷️ SPIDEY CINEMATIC SELECTION
@@ -171,7 +130,7 @@ function ProjectCard({ project, idx, theme, onClick }) {
         {/* Hover Action Overlay */}
         <div className="absolute inset-0 bg-black/65 opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col items-center justify-center p-3 text-center gap-2 backdrop-blur-[1px]">
           <span className="font-kalam font-bold text-xs sm:text-sm bg-[var(--yellow)] text-[#2b2620] px-3.5 py-1.5 border-2 border-[var(--ink)] rounded-md shadow-lg -rotate-2 flex items-center gap-1.5">
-            <Eye className="w-4 h-4 text-[var(--red)]" /> Inspect Artwork 🕷️
+            <Eye className="w-4 h-4 text-[var(--red)]" /> Inspect Artwork
           </span>
           <span className="text-[11px] text-white/90 font-mono-code font-semibold">
             Click for full resolution &amp; Drive
@@ -222,18 +181,8 @@ export default function WorkGallery({ theme }) {
   return (
     <section className="relative py-16 sm:py-24 px-3 sm:px-4 bg-graph-paper border-t-8 border-b-8 border-[var(--craft-b)] overflow-hidden max-w-full" id="work">
       
-      {/* SPIDER-MAN THEME CORNER WEBS & SPIDER EMBLEM WATERMARK */}
-      <SpiderWebTopLeft />
-      <SpiderWebTopRight />
-      <SpiderWebBottomLeft />
-      <SpiderWebBottomRight />
-
-      {/* Spider Emblem Watermark Background Graphic */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] sm:w-[650px] h-[350px] sm:h-[650px] pointer-events-none opacity-5 z-0 flex items-center justify-center">
-        <svg viewBox="0 0 100 100" className="w-full h-full text-[var(--red)] fill-current">
-          <path d="M50 20 C45 35 25 35 15 25 C25 40 40 45 45 50 C40 60 20 70 10 85 C25 75 40 65 48 55 L50 65 L52 55 C60 65 75 75 90 85 C80 70 60 60 55 50 C60 45 75 40 85 25 C75 35 55 35 50 20 Z" />
-        </svg>
-      </div>
+      {/* Sleek Spider Blueprint Web Grid Background */}
+      <SpiderBlueprintWeb />
 
       {/* Decorative Outer Border */}
       <div className="absolute inset-0 shadow-[inset_0_0_0_12px_rgba(230,214,179,0.35)] sm:shadow-[inset_0_0_0_20px_rgba(230,214,179,0.35)] pointer-events-none" />
@@ -243,18 +192,20 @@ export default function WorkGallery({ theme }) {
         {/* Gallery Header with AnimatedSection */}
         <AnimatedSection direction="up">
           <div className="mb-8 sm:mb-12">
+            
+            {/* RESTORED ORIGINAL SMALL BADGE */}
             <div 
               style={{ color: textSoftColor }}
-              className="inline-flex items-center gap-2 font-sans font-extrabold text-[10px] sm:text-xs tracking-widest uppercase border-2 border-dashed border-[var(--red)] px-3 py-1.5 -rotate-1 bg-[var(--paper)] text-[var(--red)] shadow-md"
+              className="inline-flex items-center gap-2 font-sans font-extrabold text-[10px] sm:text-xs tracking-widest uppercase border-2 border-dashed border-[var(--ink-soft)] px-2.5 py-1 -rotate-1"
             >
-              🕷️ SPIDEY-SENSE ARTWORK SHOWCASE ★ LOG_01
+              <Sparkles className="w-3.5 h-3.5 text-[var(--red)]" /> LOG_01 — Krish Shrestha Portfolio
             </div>
             
             <h2 
               style={{ color: textColor }}
               className="font-caveat font-bold text-5xl sm:text-8xl md:text-9xl mt-3 sm:mt-4 leading-none relative inline-block"
             >
-              WORK <span className="text-[var(--red)]">GALLERY 🕷️</span>
+              WORK <span className="text-[var(--red)]">GALLERY</span>
             </h2>
             
             <svg className="w-56 sm:w-96 mt-1 block" viewBox="0 0 340 40" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -265,12 +216,12 @@ export default function WorkGallery({ theme }) {
               style={{ color: textSoftColor }}
               className="font-sans text-xs sm:text-base max-w-lg mt-3 sm:mt-4 leading-relaxed"
             >
-              A showcase of typography posters, editorial magazine covers, Spider-Man cinematic art, and visual graphic design — crafted in Photoshop &amp; Illustrator.
+              A showcase of typography posters, editorial magazine covers, Spider-Man cinematic art, and visual graphic design — crafted with precision in Photoshop &amp; Illustrator.
             </p>
           </div>
         </AnimatedSection>
 
-        {/* Category Filters (Horizontal Touch Scroll on Mobile) */}
+        {/* Category Filters */}
         <AnimatedSection delay={0.1}>
           <div className="flex flex-nowrap sm:flex-wrap gap-2 sm:gap-3 mb-8 sm:mb-12 overflow-x-auto pb-2 -mx-3 px-3 sm:mx-0 sm:px-0 no-scrollbar">
             {CATEGORIES.map((cat) => {
@@ -286,11 +237,11 @@ export default function WorkGallery({ theme }) {
                   }}
                   className={`font-kalam font-bold text-xs sm:text-sm px-3.5 py-1.5 sm:px-4 sm:py-2 border-2 border-[var(--ink)] rounded whitespace-nowrap shrink-0 transition-all duration-200 ${
                     active 
-                      ? 'bg-[var(--red)] text-white -rotate-1 scale-105 shadow-lg border-[var(--ink)]' 
+                      ? 'bg-[var(--ink)] text-[var(--paper)] -rotate-1 scale-105 shadow-md' 
                       : 'bg-[var(--paper)] text-[var(--ink)] hover:bg-[var(--craft)] rotate-0'
                   }`}
                 >
-                  {cat === 'Cinematic Poster Art' ? '🕸️ Cinematic Poster Art' : cat}
+                  {cat}
                 </motion.button>
               );
             })}
@@ -300,7 +251,7 @@ export default function WorkGallery({ theme }) {
         {/* Projects Grid */}
         <motion.div 
           layout
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 max-w-4xl mx-auto gap-6 sm:gap-12 perspective-1000 relative"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 max-w-4xl mx-auto gap-6 sm:gap-12 perspective-1000"
         >
           <AnimatePresence>
             {filteredProjects.map((project, idx) => (
@@ -335,7 +286,7 @@ export default function WorkGallery({ theme }) {
               style={{ color: textSoftColor }}
               className="font-sans text-xs sm:text-sm mt-2 max-w-md mx-auto"
             >
-              Check out all raw posters, typography experiments, Spider-Man art, and high-res graphic exports.
+              Check out all raw posters, typography experiments, and high-res graphic art exports.
             </p>
             <div className="mt-5 sm:mt-6">
               <motion.a
@@ -348,7 +299,7 @@ export default function WorkGallery({ theme }) {
                 className="stamp-btn inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 bg-[var(--yellow)] text-[#2b2620] hover:bg-[var(--ink)] hover:text-white shadow-lg text-xs sm:text-base w-full sm:w-auto"
               >
                 <Folder className="w-4 h-4 sm:w-5 sm:h-5 text-[var(--red)]" />
-                Open Google Drive Folder 🕷️
+                Open Google Drive Folder
                 <ExternalLink className="w-3.5 h-3.5 sm:w-4 sm:h-4 ml-1" />
               </motion.a>
             </div>
