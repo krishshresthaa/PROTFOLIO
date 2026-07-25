@@ -24,11 +24,11 @@ export const setSoundEnabled = (enabled) => {
 
 export const isSoundEnabled = () => soundEnabled;
 
-// Cached Paper Rustle Sound (Throttled & Non-Blocking)
+// Loud, Crisp Paper Rustle Sound (Card / Letter Hover)
 export const playPaperRustle = () => {
   if (!soundEnabled) return;
   const now = Date.now();
-  if (now - lastRustleTime < 120) return; // Throttle sound triggers
+  if (now - lastRustleTime < 80) return; // Responsive throttle
   lastRustleTime = now;
 
   try {
@@ -36,7 +36,7 @@ export const playPaperRustle = () => {
     if (!ctx) return;
 
     if (!cachedNoiseBuffer) {
-      const bufferSize = Math.floor(ctx.sampleRate * 0.06);
+      const bufferSize = Math.floor(ctx.sampleRate * 0.08);
       cachedNoiseBuffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
       const data = cachedNoiseBuffer.getChannelData(0);
       for (let i = 0; i < bufferSize; i++) {
@@ -49,12 +49,12 @@ export const playPaperRustle = () => {
 
     const filter = ctx.createBiquadFilter();
     filter.type = 'bandpass';
-    filter.frequency.setValueAtTime(1200, ctx.currentTime);
-    filter.Q.setValueAtTime(3.0, ctx.currentTime);
+    filter.frequency.setValueAtTime(1600, ctx.currentTime);
+    filter.Q.setValueAtTime(2.2, ctx.currentTime);
 
     const gain = ctx.createGain();
-    gain.gain.setValueAtTime(0.025, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.05);
+    gain.gain.setValueAtTime(0.25, ctx.currentTime); // Boosted from 0.025 to 0.25
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.07);
 
     noise.connect(filter);
     filter.connect(gain);
@@ -66,7 +66,7 @@ export const playPaperRustle = () => {
   }
 };
 
-// Rubber Stamp Thump Sound
+// Rich Rubber Stamp Thump Sound (Button & Stamp Clicks)
 export const playStampClick = () => {
   if (!soundEnabled) return;
   try {
@@ -77,23 +77,23 @@ export const playStampClick = () => {
     const gain = ctx.createGain();
 
     osc.type = 'triangle';
-    osc.frequency.setValueAtTime(140, ctx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(30, ctx.currentTime + 0.08);
+    osc.frequency.setValueAtTime(220, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(45, ctx.currentTime + 0.12);
 
-    gain.gain.setValueAtTime(0.2, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
+    gain.gain.setValueAtTime(0.75, ctx.currentTime); // Boosted from 0.2 to 0.75
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.12);
 
     osc.connect(gain);
     gain.connect(ctx.destination);
 
     osc.start();
-    osc.stop(ctx.currentTime + 0.08);
+    osc.stop(ctx.currentTime + 0.12);
   } catch (e) {
     // Ignore
   }
 };
 
-// Push Pin Pop Sound
+// Bright Push Pin Pop Sound (Step Selection & Drag Reset)
 export const playPop = () => {
   if (!soundEnabled) return;
   try {
@@ -104,17 +104,17 @@ export const playPop = () => {
     const gain = ctx.createGain();
 
     osc.type = 'sine';
-    osc.frequency.setValueAtTime(400, ctx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(800, ctx.currentTime + 0.04);
+    osc.frequency.setValueAtTime(450, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(1100, ctx.currentTime + 0.06);
 
-    gain.gain.setValueAtTime(0.1, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.04);
+    gain.gain.setValueAtTime(0.6, ctx.currentTime); // Boosted from 0.1 to 0.6
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.06);
 
     osc.connect(gain);
     gain.connect(ctx.destination);
 
     osc.start();
-    osc.stop(ctx.currentTime + 0.04);
+    osc.stop(ctx.currentTime + 0.06);
   } catch (e) {
     // Ignore
   }
