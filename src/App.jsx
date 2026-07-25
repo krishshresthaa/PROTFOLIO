@@ -31,24 +31,39 @@ export default function App() {
   return (
     <div className={`min-h-screen bg-[var(--paper)] text-[var(--ink)] transition-colors duration-300 relative ${theme === 'dark' ? 'dark-theme' : theme === 'blueprint' ? 'blueprint-theme' : ''}`}>
       
-      {/* Background Graphic Blueprint Crosshairs & Halftone Accents */}
-      <div className="fixed inset-0 pointer-events-none z-0 opacity-15 overflow-hidden">
-        <div className="absolute top-[15%] left-6 font-mono-code text-xs text-[var(--ink-soft)] font-bold select-none">+ 00° 15' N // GRID_STUDIO</div>
-        <div className="absolute top-[35%] right-6 font-mono-code text-xs text-[var(--ink-soft)] font-bold select-none">+ 85° 40' E // DRAFTING_SCALE</div>
-        <div className="absolute top-[65%] left-6 font-mono-code text-xs text-[var(--ink-soft)] font-bold select-none">SCALE 1:1 // KRISH_SHRESTHA</div>
-        <div className="absolute top-[85%] right-6 font-mono-code text-xs text-[var(--ink-soft)] font-bold select-none">TYPOGRAPHY_LAB_2026</div>
+      {/* VIBRANT GRAPHIC DESIGNER BACKGROUND WATERMARKS & CROP MARKS */}
+      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden select-none">
+        
+        {/* Glowing Ambient Color Orbs */}
+        <div className="absolute top-[10%] left-[-10%] w-[500px] h-[500px] rounded-full bg-[var(--red)]/10 blur-[120px] will-change-transform transform-gpu" />
+        <div className="absolute top-[45%] right-[-10%] w-[600px] h-[600px] rounded-full bg-[var(--yellow)]/12 blur-[140px] will-change-transform transform-gpu" />
+        <div className="absolute top-[75%] left-[-5%] w-[550px] h-[550px] rounded-full bg-[var(--red)]/10 blur-[130px] will-change-transform transform-gpu" />
 
-        {/* Floating Geometric Blueprint Target Rings */}
-        <svg className="absolute top-1/4 left-10 w-24 h-24 text-[var(--ink-soft)] opacity-20" viewBox="0 0 100 100">
-          <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" strokeWidth="1" strokeDasharray="4 4" />
-          <line x1="50" y1="0" x2="50" y2="100" stroke="currentColor" strokeWidth="1" />
-          <line x1="0" y1="50" x2="100" y2="50" stroke="currentColor" strokeWidth="1" />
-        </svg>
+        {/* Printer Crop & Registration Marks */}
+        <div className="absolute top-4 left-4 font-mono-code text-[11px] font-bold text-[var(--ink-soft)] opacity-40">⌜ CROP_01 // 300DPI</div>
+        <div className="absolute top-4 right-4 font-mono-code text-[11px] font-bold text-[var(--ink-soft)] opacity-40">⌝ CROP_02 // CMYK</div>
+        <div className="absolute bottom-4 left-4 font-mono-code text-[11px] font-bold text-[var(--ink-soft)] opacity-40">⌞ STUDIO_2026</div>
+        <div className="absolute bottom-4 right-4 font-mono-code text-[11px] font-bold text-[var(--ink-soft)] opacity-40">⌟ KATHMANDU, NEPAL</div>
 
-        <svg className="absolute bottom-1/4 right-10 w-28 h-28 text-[var(--ink-soft)] opacity-20" viewBox="0 0 100 100">
-          <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" strokeWidth="1" />
-          <polygon points="50,10 90,90 10,90" fill="none" stroke="currentColor" strokeWidth="1" strokeDasharray="3 3" />
-        </svg>
+        {/* Background Typography Watermarks */}
+        <div className="absolute top-[28%] left-8 font-marker text-7xl sm:text-9xl text-[var(--ink)] opacity-[0.035] -rotate-12 pointer-events-none">
+          TYPOGRAPHY
+        </div>
+        <div className="absolute top-[58%] right-8 font-marker text-7xl sm:text-9xl text-[var(--red)] opacity-[0.04] rotate-6 pointer-events-none">
+          GRAPHICS
+        </div>
+        <div className="absolute top-[82%] left-12 font-marker text-7xl sm:text-9xl text-[var(--ink)] opacity-[0.035] -rotate-3 pointer-events-none">
+          EDITORIAL
+        </div>
+
+        {/* Floating Target Crosshairs */}
+        <div className="absolute top-[22%] right-[8%] w-12 h-12 border border-[var(--red)]/30 rounded-full flex items-center justify-center opacity-30">
+          <div className="w-2 h-2 bg-[var(--red)] rounded-full" />
+        </div>
+        <div className="absolute top-[68%] left-[6%] w-14 h-14 border border-dashed border-[var(--ink-soft)]/30 rounded-full flex items-center justify-center opacity-30">
+          <div className="w-1.5 h-1.5 bg-[var(--ink)] rounded-full" />
+        </div>
+
       </div>
 
       {/* Animated Workspace Preloader */}
