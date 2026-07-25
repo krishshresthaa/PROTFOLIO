@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from 'framer-motion';
+import { motion, AnimatePresence, useMotionValue, useTransform, useSpring, useScroll } from 'framer-motion';
 import { PROJECTS_DATA, USER_INFO } from '../data/portfolioData';
 import { playPaperRustle, playStampClick } from '../utils/audioSynth';
 import ProjectModal from './ProjectModal';
@@ -19,13 +19,10 @@ function SpiderBlueprintWeb() {
   return (
     <div className="absolute inset-0 pointer-events-none opacity-20 z-0 flex items-center justify-center overflow-hidden">
       <svg className="w-[800px] h-[800px] text-[var(--red)]" viewBox="0 0 500 500" fill="none" stroke="currentColor" strokeWidth="0.8">
-        {/* Concentric Web Octagons */}
         <polygon points="250,50 391,108 450,250 391,391 250,450 108,391 50,250 108,108" strokeDasharray="4 4" />
         <polygon points="250,100 356,143 400,250 356,356 250,400 143,356 100,250 143,143" />
         <polygon points="250,150 320,179 350,250 320,320 250,350 179,320 150,250 179,179" strokeDasharray="3 3" />
         <polygon points="250,190 292,207 310,250 292,292 250,310 207,292 190,250 207,207" />
-        
-        {/* Radial Web Rays */}
         <line x1="250" y1="0" x2="250" y2="500" />
         <line x1="0" y1="250" x2="500" y2="250" />
         <line x1="73" y1="73" x2="426" y2="426" />
@@ -35,15 +32,88 @@ function SpiderBlueprintWeb() {
   );
 }
 
+/* VECTOR SPIDER-MAN RIGHT PEEKING GRAPHIC */
+function SpideyRightPeeker({ scrollProgress }) {
+  // TranslateX mapping: 120% (hidden off screen) -> 10% (peeking out) -> 120% (vanished)
+  const x = useTransform(
+    scrollProgress,
+    [0.10, 0.22, 0.40, 0.50],
+    ['120%', '10%', '10%', '120%']
+  );
+
+  return (
+    <motion.div
+      style={{ x }}
+      className="fixed right-0 top-[28%] z-40 pointer-events-none w-44 sm:w-64 h-56 sm:h-80 drop-shadow-[0_10px_25px_rgba(194,42,31,0.4)] will-change-transform transform-gpu"
+    >
+      {/* Hanging Web Line */}
+      <div className="absolute top-0 right-14 w-0.5 h-full bg-white/70 shadow-[0_0_8px_#fff]" />
+
+      {/* Spider-Man Head & Shoulder Peeking Out */}
+      <svg className="w-full h-full text-[var(--red)]" viewBox="0 0 200 240" fill="none">
+        {/* Head Mask Base */}
+        <path d="M 60 20 C 130 10, 190 50, 190 130 C 190 190, 120 230, 80 230 C 40 230, 20 180, 20 130 C 20 70, 30 30, 60 20 Z" fill="var(--red)" stroke="#1a1512" strokeWidth="6" />
+        
+        {/* Suit Web Lines Grid */}
+        <path d="M 80 20 L 80 230 M 20 130 L 190 130 M 40 60 L 170 190 M 170 60 L 40 190" stroke="#1a1512" strokeWidth="2.5" strokeOpacity="0.75" />
+        <path d="M 60 70 Q 110 80 160 70 M 50 110 Q 110 120 175 110 M 50 160 Q 110 170 170 160" stroke="#1a1512" strokeWidth="2" strokeOpacity="0.75" />
+
+        {/* Large White Reflective Eye Lens (Left) */}
+        <path d="M 45 90 C 70 85, 95 105, 95 130 C 95 145, 65 155, 45 130 Z" fill="#ffffff" stroke="#1a1512" strokeWidth="7" />
+        {/* Large White Reflective Eye Lens (Right) */}
+        <path d="M 115 90 C 140 85, 165 105, 165 130 C 165 145, 135 155, 115 130 Z" fill="#ffffff" stroke="#1a1512" strokeWidth="7" />
+
+        {/* Spider Emblem Badge Tag */}
+        <g transform="translate(90, 185) scale(0.6)">
+          <path d="M50 20 C45 35 25 35 15 25 C25 40 40 45 45 50 C40 60 20 70 10 85 C25 75 40 65 48 55 L50 65 L52 55 C60 65 75 75 90 85 C80 70 60 60 55 50 C60 45 75 40 85 25 C75 35 55 35 50 20 Z" fill="#1a1512" />
+        </g>
+      </svg>
+    </motion.div>
+  );
+}
+
+/* VECTOR SPIDER-MAN LEFT PEEKING GRAPHIC (UPSIDE DOWN) */
+function SpideyLeftPeeker({ scrollProgress }) {
+  // TranslateX mapping: -120% (hidden off screen) -> -10% (peeking out) -> -120% (vanished)
+  const x = useTransform(
+    scrollProgress,
+    [0.52, 0.64, 0.80, 0.92],
+    ['-120%', '-10%', '-10%', '-120%']
+  );
+
+  return (
+    <motion.div
+      style={{ x }}
+      className="fixed left-0 top-[35%] z-40 pointer-events-none w-44 sm:w-64 h-56 sm:h-80 drop-shadow-[0_10px_25px_rgba(194,42,31,0.4)] rotate-180 scale-x-[-1] will-change-transform transform-gpu"
+    >
+      {/* Hanging Web Line */}
+      <div className="absolute top-0 left-14 w-0.5 h-full bg-white/70 shadow-[0_0_8px_#fff]" />
+
+      {/* Spider-Man Head & Shoulder Peeking Out */}
+      <svg className="w-full h-full text-[var(--red)]" viewBox="0 0 200 240" fill="none">
+        {/* Head Mask Base */}
+        <path d="M 60 20 C 130 10, 190 50, 190 130 C 190 190, 120 230, 80 230 C 40 230, 20 180, 20 130 C 20 70, 30 30, 60 20 Z" fill="var(--red)" stroke="#1a1512" strokeWidth="6" />
+        
+        {/* Suit Web Lines Grid */}
+        <path d="M 80 20 L 80 230 M 20 130 L 190 130 M 40 60 L 170 190 M 170 60 L 40 190" stroke="#1a1512" strokeWidth="2.5" strokeOpacity="0.75" />
+        <path d="M 60 70 Q 110 80 160 70 M 50 110 Q 110 120 175 110 M 50 160 Q 110 170 170 160" stroke="#1a1512" strokeWidth="2" strokeOpacity="0.75" />
+
+        {/* Large White Reflective Eye Lens (Left) */}
+        <path d="M 45 90 C 70 85, 95 105, 95 130 C 95 145, 65 155, 45 130 Z" fill="#ffffff" stroke="#1a1512" strokeWidth="7" />
+        {/* Large White Reflective Eye Lens (Right) */}
+        <path d="M 115 90 C 140 85, 165 105, 165 130 C 165 145, 135 155, 115 130 Z" fill="#ffffff" stroke="#1a1512" strokeWidth="7" />
+      </svg>
+    </motion.div>
+  );
+}
+
 /* 3D PARALLAX TILT PROJECT CARD COMPONENT */
 function ProjectCard({ project, idx, theme, onClick }) {
   const cardRef = useRef(null);
 
-  // Mouse position within card bounds for 3D tilt
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
-  // Smooth springs for tilt
   const springConfig = { stiffness: 250, damping: 20 };
   const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [12, -12]), springConfig);
   const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-12, 12]), springConfig);
@@ -96,38 +166,32 @@ function ProjectCard({ project, idx, theme, onClick }) {
         isSpideyCard ? 'ring-3 ring-[var(--red)]/70 shadow-[0_0_20px_rgba(194,42,31,0.2)]' : ''
       }`}
     >
-      {/* Dynamic Paper Tape Accent */}
       <motion.div 
         whileHover={{ rotate: 5, scale: 1.1 }}
         className="tape top-[-12px] left-1/2 -ml-8 w-20 h-6 -rotate-3 z-20 pointer-events-none" 
       />
 
-      {/* Spider-Man Special Badge Tag */}
       {isSpideyCard && (
         <span className="absolute top-[-10px] right-3 z-30 font-kalam font-bold text-[10px] sm:text-xs bg-[var(--red)] text-white px-2.5 py-0.5 rounded shadow-lg border border-white/40 flex items-center gap-1">
           🕷️ SPIDEY CINEMATIC SELECTION
         </span>
       )}
 
-      {/* Frame Image Container */}
       <div 
         style={{ transform: 'translateZ(20px)' }}
         className="relative aspect-3/4 bg-stone-900 border-2 border-[var(--ink)]/40 overflow-hidden flex items-center justify-center rounded-sm shadow-inner group w-full"
       >
-        {/* Poster Image */}
         <img 
           src={project.images[0]} 
           alt={project.title} 
           className="w-full h-full object-cover object-top transition-all duration-700 group-hover:scale-108 group-hover:brightness-105"
         />
 
-        {/* Shimmer Light Reflection Sweep */}
         <motion.div 
           style={{ opacity: shineOpacity }}
           className="absolute inset-0 bg-gradient-to-tr from-transparent via-white to-transparent pointer-events-none -translate-x-full group-hover:translate-x-full transition-transform duration-1000"
         />
 
-        {/* Hover Action Overlay */}
         <div className="absolute inset-0 bg-black/65 opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col items-center justify-center p-3 text-center gap-2 backdrop-blur-[1px]">
           <span className="font-kalam font-bold text-xs sm:text-sm bg-[var(--yellow)] text-[#2b2620] px-3.5 py-1.5 border-2 border-[var(--ink)] rounded-md shadow-lg -rotate-2 flex items-center gap-1.5">
             <Eye className="w-4 h-4 text-[var(--red)]" /> Inspect Artwork
@@ -137,7 +201,6 @@ function ProjectCard({ project, idx, theme, onClick }) {
           </span>
         </div>
 
-        {/* Frame Number Tag */}
         <span 
           style={{ transform: 'translateZ(30px)' }}
           className="frame-num absolute top-2.5 left-2.5 font-kalam font-bold text-[11px] sm:text-xs text-[var(--ink)] bg-[var(--paper)]/95 border-2 border-[var(--ink)] px-2 py-0.5 rounded shadow-md"
@@ -146,7 +209,6 @@ function ProjectCard({ project, idx, theme, onClick }) {
         </span>
       </div>
 
-      {/* Frame Title & Category Metadata */}
       <div style={{ transform: 'translateZ(15px)' }} className="mt-3.5">
         <div className="flex items-center gap-1.5">
           <span className="w-2 h-2 rounded-full bg-[var(--red)] animate-ping shrink-0" />
@@ -169,6 +231,13 @@ function ProjectCard({ project, idx, theme, onClick }) {
 export default function WorkGallery({ theme }) {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [selectedProject, setSelectedProject] = useState(null);
+  const sectionRef = useRef(null);
+
+  // Track scroll progress within Work Gallery container
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"]
+  });
 
   const filteredProjects = selectedCategory === 'All' 
     ? PROJECTS_DATA 
@@ -179,8 +248,12 @@ export default function WorkGallery({ theme }) {
   const textSoftColor = theme === 'dark' ? '#e3ded5' : theme === 'blueprint' ? '#c2e0ff' : '#4a423a';
 
   return (
-    <section className="relative py-16 sm:py-24 px-3 sm:px-4 bg-graph-paper border-t-8 border-b-8 border-[var(--craft-b)] overflow-hidden max-w-full" id="work">
+    <section ref={sectionRef} className="relative py-16 sm:py-24 px-3 sm:px-4 bg-graph-paper border-t-8 border-b-8 border-[var(--craft-b)] overflow-hidden max-w-full" id="work">
       
+      {/* SCROLL-DRIVEN SPIDER-MAN EDGE PEEKERS */}
+      <SpideyRightPeeker scrollProgress={scrollYProgress} />
+      <SpideyLeftPeeker scrollProgress={scrollYProgress} />
+
       {/* Sleek Spider Blueprint Web Grid Background */}
       <SpiderBlueprintWeb />
 
@@ -193,7 +266,6 @@ export default function WorkGallery({ theme }) {
         <AnimatedSection direction="up">
           <div className="mb-8 sm:mb-12">
             
-            {/* RESTORED ORIGINAL SMALL BADGE */}
             <div 
               style={{ color: textSoftColor }}
               className="inline-flex items-center gap-2 font-sans font-extrabold text-[10px] sm:text-xs tracking-widest uppercase border-2 border-dashed border-[var(--ink-soft)] px-2.5 py-1 -rotate-1"
