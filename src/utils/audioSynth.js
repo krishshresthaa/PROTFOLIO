@@ -1,11 +1,17 @@
-// Web Audio API Synth for zero-asset, high-performance tactile sound effects
+// Web Audio API Synth for zero-asset, high-performance tactile sound effects & soft background melody
 
 let audioCtx = null;
 let masterGain = null;
+let musicGain = null;
 let soundEnabled = true;
 let cachedNoiseBuffer = null;
 let lastRustleTime = 0;
 let unlocked = false;
+let melodyInterval = null;
+let melodyStep = 0;
+
+// Soft Pentatonic Ambient Melody Notes (Frequencies in Hz)
+const AMBIENT_NOTES = [130.81, 164.81, 196.00, 246.94, 293.66, 329.63, 246.94, 196.00];
 
 // Global User Gesture Unlocker for Browser Autoplay Policy
 const unlockAudio = () => {
@@ -15,9 +21,15 @@ const unlockAudio = () => {
       const AudioContextClass = window.AudioContext || window.webkitAudioContext;
       if (AudioContextClass) {
         audioCtx = new AudioContextClass();
+
         masterGain = audioCtx.createGain();
         masterGain.gain.setValueAtTime(1.0, audioCtx.currentTime);
         masterGain.connect(audioCtx.destination);
+
+        // Music Gain Node for Soft Ambient Background Melody
+        musicGain = audioCtx.createGain();
+        musicGain.gain.setValueAtTime(soundEnabled ? 0.04 : 0.0, audioCtx.currentTime);
+        musicGain.connect(masterGain);
       }
     }
     if (audioCtx && audioCtx.state === 'suspended') {
@@ -25,6 +37,7 @@ const unlockAudio = () => {
     }
     if (audioCtx && audioCtx.state === 'running') {
       unlocked = true;
+      startAmbientMelody();
     }
   } catch (e) {
     // Ignore
@@ -39,6 +52,48 @@ if (typeof window !== 'undefined') {
   });
 }
 
+// Continuous Soft Ambient Background Melody Loop
+const startAmbientMelody = () => {
+  if (melodyInterval || !audioCtx) return;
+
+  const playNextMelodyNote = () => {
+    if (!soundEnabled || !audioCtx || audioCtx.state !== 'running') return;
+
+    try {
+      const noteFreq = AMBIENT_NOTES[melodyStep % AMBIENT_NOTES.length];
+      melodyStep++;
+
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      const filter = audioCtx.createBiquadFilter();
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(noteFreq, audioCtx.currentTime);
+
+      // Lowpass Filter for Warm Lo-Fi Studio Sound
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(550, audioCtx.currentTime);
+
+      // Soft Envelope (Slow Attack & Gentle Decay)
+      gain.gain.setValueAtTime(0.001, audioCtx.currentTime);
+      gain.gain.linearRampToValueAtTime(0.04, audioCtx.currentTime + 0.4); // Very soft low volume
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 2.2);
+
+      osc.connect(filter);
+      filter.connect(gain);
+      gain.connect(musicGain || masterGain);
+
+      osc.start();
+      osc.stop(audioCtx.currentTime + 2.2);
+    } catch (e) {
+      // Ignore
+    }
+  };
+
+  playNextMelodyNote();
+  melodyInterval = setInterval(playNextMelodyNote, 1400); // Gentle 1.4s arpeggio tempo
+};
+
 const getAudioContext = () => {
   unlockAudio();
   return audioCtx;
@@ -46,7 +101,11 @@ const getAudioContext = () => {
 
 export const setSoundEnabled = (enabled) => {
   soundEnabled = enabled;
+  if (musicGain && audioCtx) {
+    musicGain.gain.setValueAtTime(enabled ? 0.04 : 0.0, audioCtx.currentTime);
+  }
   if (enabled) {
+    unlockAudio();
     playPop();
   }
 };
@@ -57,7 +116,7 @@ export const isSoundEnabled = () => soundEnabled;
 export const playPaperRustle = () => {
   if (!soundEnabled) return;
   const now = Date.now();
-  if (now - lastRustleTime < 60) return; // Fast responsive throttle
+  if (now - lastRustleTime < 60) return;
   lastRustleTime = now;
 
   try {
@@ -81,7 +140,7 @@ export const playPaperRustle = () => {
     filter.frequency.setValueAtTime(1200, ctx.currentTime);
 
     const gain = ctx.createGain();
-    gain.gain.setValueAtTime(0.5, ctx.currentTime); // High volume gain
+    gain.gain.setValueAtTime(0.5, ctx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.12);
 
     noise.connect(filter);
@@ -109,7 +168,7 @@ export const playStampClick = () => {
     osc1.frequency.setValueAtTime(280, ctx.currentTime);
     osc1.frequency.exponentialRampToValueAtTime(50, ctx.currentTime + 0.15);
 
-    gain1.gain.setValueAtTime(0.9, ctx.currentTime); // High punch volume
+    gain1.gain.setValueAtTime(0.9, ctx.currentTime);
     gain1.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
 
     osc1.connect(gain1);
@@ -154,7 +213,7 @@ export const playPop = () => {
     osc.frequency.setValueAtTime(550, ctx.currentTime);
     osc.frequency.exponentialRampToValueAtTime(1400, ctx.currentTime + 0.08);
 
-    gain.gain.setValueAtTime(0.75, ctx.currentTime); // Loud pop
+    gain.gain.setValueAtTime(0.75, ctx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
 
     osc.connect(gain);
