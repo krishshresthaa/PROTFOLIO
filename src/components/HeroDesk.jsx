@@ -74,22 +74,20 @@ export default function HeroDesk({ isLoaded = true, onOpenSketchpad, onOpenResum
   const floatingTokens = ['⌘Z', 'Ps', 'Ai', '72dpi', 'Px', 'Pt', 'Aa', '✎'];
 
   return (
-    <header 
+    <header
       ref={headerRef}
-      className={`relative min-h-[92vh] py-12 sm:py-16 px-3 sm:px-4 bg-desk-wood overflow-hidden select-none border-b-8 border-[var(--craft-b)] perspective-1000 max-w-full transition-all duration-700 ${
-        lampOn ? 'brightness-100 contrast-100' : 'brightness-50 contrast-125 bg-stone-950'
-      }`} 
+      className={`relative min-h-[92vh] py-12 sm:py-16 px-3 sm:px-4 bg-desk-wood overflow-hidden select-none border-b-8 border-[var(--craft-b)] perspective-1000 max-w-full transition-all duration-700 ${lampOn ? 'brightness-100 contrast-100' : 'brightness-50 contrast-125 bg-stone-950'
+        }`}
       id="home"
     >
-      
+
       {/* REAL STUDIO DESK LAMP SPOTLIGHT CONE (GPU CSS PARALLAX) */}
-      <div 
+      <div
         style={{
           transform: 'translate3d(calc(var(--mx, 0) * -25px), calc(var(--my, 0) * -25px), 0)'
         }}
-        className={`absolute -top-[15%] left-1/2 -translate-x-1/2 w-[700px] sm:w-[1400px] h-[700px] sm:h-[1400px] pointer-events-none transition-all duration-700 z-10 will-change-transform transform-gpu ${
-          lampOn ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
-        }`}
+        className={`absolute -top-[15%] left-1/2 -translate-x-1/2 w-[700px] sm:w-[1400px] h-[700px] sm:h-[1400px] pointer-events-none transition-all duration-700 z-10 will-change-transform transform-gpu ${lampOn ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
+          }`}
       >
         <div className="w-full h-full rounded-full bg-[radial-gradient(ellipse_at_top,rgba(255,245,215,0.42)_0%,rgba(255,225,160,0.18)_35%,rgba(255,200,100,0.05)_60%,transparent_80%)] blur-md" />
       </div>
@@ -98,12 +96,11 @@ export default function HeroDesk({ isLoaded = true, onOpenSketchpad, onOpenResum
       <div className="absolute top-0 left-1/2 -translate-x-1/2 z-30 pointer-events-none flex flex-col items-center">
         <div className="w-3 sm:w-4 h-8 sm:h-12 bg-gradient-to-b from-stone-800 to-stone-600 rounded-b shadow-md border-x border-stone-500" />
         <div className="relative w-28 sm:w-44 h-10 sm:h-14 bg-gradient-to-b from-stone-900 via-stone-800 to-stone-900 rounded-t-full border-t-2 border-amber-400/40 shadow-2xl flex items-end justify-center pb-1">
-          <div 
-            className={`w-12 sm:w-20 h-3 sm:h-5 rounded-full transition-all duration-500 ${
-              lampOn 
-                ? 'bg-amber-100 shadow-[0_0_35px_12px_rgba(255,230,150,0.95)]' 
+          <div
+            className={`w-12 sm:w-20 h-3 sm:h-5 rounded-full transition-all duration-500 ${lampOn
+                ? 'bg-amber-100 shadow-[0_0_35px_12px_rgba(255,230,150,0.95)]'
                 : 'bg-stone-700 shadow-none border border-stone-600'
-            }`} 
+              }`}
           />
         </div>
       </div>
@@ -126,7 +123,7 @@ export default function HeroDesk({ isLoaded = true, onOpenSketchpad, onOpenResum
       </div>
 
       {/* DESK CONTROL BAR */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
         transition={{ delay: 0.1 }}
@@ -134,11 +131,10 @@ export default function HeroDesk({ isLoaded = true, onOpenSketchpad, onOpenResum
       >
         <button
           onClick={toggleLamp}
-          className={`flex items-center gap-1.5 px-3 sm:px-4 py-1.5 text-xs sm:text-sm font-bold font-kalam rounded border-2 border-[var(--ink)] transition-all duration-300 shadow-md ${
-            lampOn 
-              ? 'bg-[var(--yellow)] text-[#2b2620] shadow-[0_0_15px_rgba(242,217,78,0.6)] scale-105' 
+          className={`flex items-center gap-1.5 px-3 sm:px-4 py-1.5 text-xs sm:text-sm font-bold font-kalam rounded border-2 border-[var(--ink)] transition-all duration-300 shadow-md ${lampOn
+              ? 'bg-[var(--yellow)] text-[#2b2620] shadow-[0_0_15px_rgba(242,217,78,0.6)] scale-105'
               : 'bg-stone-800 text-amber-300 border-amber-500/50 hover:bg-stone-700'
-          }`}
+            }`}
           title="Toggle Studio Desk Lamp Spotlight"
         >
           <Lightbulb className={`w-4 h-4 ${lampOn ? 'text-[var(--red)] animate-pulse' : 'text-amber-400'}`} />
@@ -159,30 +155,30 @@ export default function HeroDesk({ isLoaded = true, onOpenSketchpad, onOpenResum
       </motion.div>
 
       {/* 3D PARALLAX BACKGROUND SHEETS (GPU CSS DRIVEN) */}
-      <div 
+      <div
         style={{
           transform: 'translate3d(-50%, calc(var(--my, 0) * 10px), 0) rotateX(calc(var(--my, 0) * -3deg)) rotateY(calc(var(--mx, 0) * 3deg))'
         }}
-        className="absolute w-[94%] sm:w-[86%] max-w-[1020px] h-[86%] sm:h-[80%] top-[7%] sm:top-[10%] left-1/2 bg-craft-paper shadow-2xl rounded-sm pointer-events-none border border-[var(--craft-b)] will-change-transform transform-gpu transition-transform duration-75" 
+        className="absolute w-[94%] sm:w-[86%] max-w-[1020px] h-[86%] sm:h-[80%] top-[7%] sm:top-[10%] left-1/2 bg-craft-paper shadow-2xl rounded-sm pointer-events-none border border-[var(--craft-b)] will-change-transform transform-gpu transition-transform duration-75"
       />
-      <div 
+      <div
         style={{
           transform: 'translate3d(-50%, calc(var(--my, 0) * 16px), 0) rotateX(calc(var(--my, 0) * -4deg)) rotateY(calc(var(--mx, 0) * 4deg))'
         }}
-        className="absolute w-[88%] sm:w-[76%] max-w-[880px] h-[78%] sm:h-[68%] top-[11%] sm:top-[16%] left-1/2 bg-graph-paper opacity-95 shadow-xl rounded-sm pointer-events-none border border-[var(--grid)] will-change-transform transform-gpu transition-transform duration-75" 
+        className="absolute w-[88%] sm:w-[76%] max-w-[880px] h-[78%] sm:h-[68%] top-[11%] sm:top-[16%] left-1/2 bg-graph-paper opacity-95 shadow-xl rounded-sm pointer-events-none border border-[var(--grid)] will-change-transform transform-gpu transition-transform duration-75"
       />
 
       {/* MAIN DESK CONTENT LAYER */}
-      <motion.div 
-        style={{ 
+      <motion.div
+        style={{
           scale: heroScale,
           opacity: heroOpacity
         }}
         className="relative z-10 max-w-[1240px] mx-auto min-h-[74vh] flex flex-col items-center justify-center text-center px-2 will-change-transform transform-gpu"
       >
-        
+
         {/* RESPONSIVE TITLE STAMP */}
-        <motion.div 
+        <motion.div
           style={{ y: titleY }}
           className="relative font-marker text-3.5xl xs:text-5xl sm:text-7xl md:text-9xl text-[var(--ink)] tracking-tight leading-none drop-shadow-lg my-2 sm:my-4 flex items-center justify-center gap-0.5 sm:gap-1 max-w-full"
         >
@@ -197,11 +193,11 @@ export default function HeroDesk({ isLoaded = true, onOpenSketchpad, onOpenResum
                 damping: 14,
                 delay: isLoaded ? 0.15 + i * 0.05 : 0
               }}
-              whileHover={{ 
-                scale: 1.25, 
-                rotate: i % 2 === 0 ? 15 : -15, 
+              whileHover={{
+                scale: 1.25,
+                rotate: i % 2 === 0 ? 15 : -15,
                 color: 'var(--red)',
-                transition: { duration: 0.2 } 
+                transition: { duration: 0.2 }
               }}
               className="inline-block cursor-default"
             >
@@ -210,28 +206,28 @@ export default function HeroDesk({ isLoaded = true, onOpenSketchpad, onOpenResum
           ))}
 
           {/* SVG Animated Interactive Glasses */}
-          <motion.svg 
+          <motion.svg
             initial={{ opacity: 0, scale: 0, rotate: -30 }}
             animate={isLoaded ? { opacity: 1, scale: 1, rotate: 0 } : { opacity: 0, scale: 0 }}
             transition={{ type: 'spring', stiffness: 200, delay: 0.7 }}
             whileHover={{ scale: 1.3, rotate: 18, y: -6 }}
             whileTap={{ scale: 0.85, rotate: -12 }}
             onHoverStart={playPaperRustle}
-            className="absolute -top-4 right-0 sm:-top-10 sm:right-6 w-16 xs:w-20 sm:w-36 cursor-pointer drop-shadow-xl z-20" 
-            viewBox="0 0 120 50" 
-            fill="none" 
+            className="absolute -top-4 right-0 sm:-top-10 sm:right-6 w-16 xs:w-20 sm:w-36 cursor-pointer drop-shadow-xl z-20"
+            viewBox="0 0 120 50"
+            fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <circle cx="30" cy="25" r="20" stroke="var(--ink)" strokeWidth="5"/>
-            <circle cx="90" cy="25" r="20" stroke="var(--ink)" strokeWidth="5"/>
-            <path d="M50 22 Q60 12 70 22" stroke="var(--ink)" strokeWidth="5" fill="none"/>
-            <path d="M10 25 L2 20" stroke="var(--ink)" strokeWidth="5"/>
-            <path d="M110 25 L118 20" stroke="var(--ink)" strokeWidth="5"/>
+            <circle cx="30" cy="25" r="20" stroke="var(--ink)" strokeWidth="5" />
+            <circle cx="90" cy="25" r="20" stroke="var(--ink)" strokeWidth="5" />
+            <path d="M50 22 Q60 12 70 22" stroke="var(--ink)" strokeWidth="5" fill="none" />
+            <path d="M10 25 L2 20" stroke="var(--ink)" strokeWidth="5" />
+            <path d="M110 25 L118 20" stroke="var(--ink)" strokeWidth="5" />
           </motion.svg>
         </motion.div>
 
         {/* Subtitle */}
-        <motion.p 
+        <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ delay: 0.65 }}
@@ -243,17 +239,17 @@ export default function HeroDesk({ isLoaded = true, onOpenSketchpad, onOpenResum
         </motion.p>
 
         {/* CTA Stamp Buttons */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 30, scale: 0.9 }}
           animate={isLoaded ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 30 }}
           transition={{ delay: 0.75, type: 'spring', stiffness: 180 }}
           className="mt-6 sm:mt-8 flex flex-col xs:flex-row flex-wrap gap-3 sm:gap-4 justify-center items-center z-20 w-full sm:w-auto px-4"
         >
-          <motion.a 
+          <motion.a
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.94 }}
-            href="#work" 
-            onClick={playStampClick} 
+            href="#work"
+            onClick={playStampClick}
             className="stamp-btn w-full xs:w-auto justify-center bg-[var(--paper)] text-[var(--ink)] border-2 border-[var(--ink)] shadow-lg hover:bg-[var(--ink)] hover:text-[var(--paper)] text-xs sm:text-base"
           >
             See Selected Posters ↓
@@ -271,7 +267,7 @@ export default function HeroDesk({ isLoaded = true, onOpenSketchpad, onOpenResum
             <FileText className="w-4 h-4 text-[var(--red)]" /> Download Resume
           </motion.button>
 
-          <motion.a 
+          <motion.a
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.94 }}
             href={USER_INFO.driveFolderUrl}
@@ -287,7 +283,7 @@ export default function HeroDesk({ isLoaded = true, onOpenSketchpad, onOpenResum
         {/* RESPONSIVE STICKY NOTES */}
         <React.Fragment key={resetKey}>
           <div className="w-full mt-8 md:mt-0 grid grid-cols-1 sm:grid-cols-2 md:block gap-4 md:gap-0 max-w-lg md:max-w-none">
-            
+
             {/* Note 1: Name */}
             <motion.div
               drag
@@ -387,9 +383,9 @@ export default function HeroDesk({ isLoaded = true, onOpenSketchpad, onOpenResum
             className="absolute bottom-[4%] left-[26%] w-36 sm:w-44 -rotate-12 cursor-grab z-20 hidden md:block will-change-transform transform-gpu transition-transform duration-75"
             title="Draggable Pencil"
           >
-            <img 
-              alt="Pencil" 
-              src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 30'><rect x='0' y='10' width='150' height='10' fill='%23e8b923'/><polygon points='150,7 175,15 150,23' fill='%23d9a441'/><polygon points='175,12 190,15 175,18' fill='%232b2620'/><rect x='0' y='10' width='150' height='2' fill='%23fff2c2' opacity='0.5'/></svg>" 
+            <img
+              alt="Pencil"
+              src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 30'><rect x='0' y='10' width='150' height='10' fill='%23e8b923'/><polygon points='150,7 175,15 150,23' fill='%23d9a441'/><polygon points='175,12 190,15 175,18' fill='%232b2620'/><rect x='0' y='10' width='150' height='2' fill='%23fff2c2' opacity='0.5'/></svg>"
               className="w-full drop-shadow-md"
             />
           </motion.div>
@@ -398,7 +394,7 @@ export default function HeroDesk({ isLoaded = true, onOpenSketchpad, onOpenResum
       </motion.div>
 
       {/* Bouncing Scroll Indicator */}
-      <motion.div 
+      <motion.div
         animate={{ y: [0, 8, 0] }}
         transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
         className="absolute bottom-2 left-1/2 -translate-x-1/2 font-kalam font-bold text-xs text-[var(--ink-soft)] flex flex-col items-center gap-0.5 z-20"
