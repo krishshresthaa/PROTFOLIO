@@ -40,7 +40,7 @@ export default function Navbar({ theme, setTheme, onOpenSketchpad, onOpenResume,
 
         {/* Desktop Navigation Links */}
         <ul className="hidden md:flex items-center gap-8 list-none font-kalam font-bold text-base">
-          {['Home', 'Work', 'Process', 'Contact'].map((item) => (
+          {['Home', 'Work', 'Process', 'Skills', 'Contact'].map((item) => (
             <li key={item}>
               <a
                 href={`#${item.toLowerCase()}`}
@@ -151,7 +151,7 @@ export default function Navbar({ theme, setTheme, onOpenSketchpad, onOpenResume,
       {mobileMenuOpen && (
         <div className="md:hidden border-t-2 border-[var(--ink)] bg-[var(--paper)] text-[var(--ink)] px-6 py-5 space-y-4 shadow-xl font-kalam font-bold text-lg">
           <div className="flex flex-col gap-3">
-            {['Home', 'Work', 'Process', 'Contact'].map((item) => (
+            {['Home', 'Work', 'Process', 'Skills', 'Contact'].map((item) => (
               <a
                 key={item}
                 href={`#${item.toLowerCase()}`}

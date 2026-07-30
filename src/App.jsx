@@ -4,6 +4,7 @@ import HeroDesk from './components/HeroDesk';
 import WorkGallery from './components/WorkGallery';
 import CollaborationMarquee from './components/CollaborationMarquee';
 import ProcessSection from './components/ProcessSection';
+import StudioSkills from './components/StudioSkills';
 import StudioContact from './components/StudioContact';
 import Footer from './components/Footer';
 import SketchpadModal from './components/SketchpadModal';
@@ -103,6 +104,9 @@ export default function App() {
 
         {/* Studio Process Timeline */}
         <ProcessSection theme={theme} />
+
+        {/* Studio Skills & Toolkit (Placed directly between Process and Contact) */}
+        <StudioSkills theme={theme} />
 
         {/* Studio Contact & Polaroid Sidebar */}
         <StudioContact 
